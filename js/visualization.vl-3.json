@@ -1,0 +1,132 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 460,
+  "background": "white",
+  "data": {
+    "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/main/data/state_summary_all_years_ready_public_2001_2025.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"filter": "toNumber(datum.year) == 2024"},
+    {"calculate": "toNumber(datum.hospitals_count)", "as": "hospitals_num"},
+    {"calculate": "toNumber(datum.population_65plus)", "as": "elderly_pop"},
+    {
+      "calculate": "(isFinite(datum.hospitals_num) && isFinite(datum.elderly_pop) && datum.elderly_pop>0) ? (datum.hospitals_num/datum.elderly_pop)*100000 : null",
+      "as": "Hospitals_per_100k_elderly"
+    },
+    {"filter": "isFinite(datum.Hospitals_per_100k_elderly)"},
+    {
+      "joinaggregate": [
+        {
+          "op": "mean",
+          "field": "Hospitals_per_100k_elderly",
+          "as": "national_avg"
+        }
+      ]
+    }
+  ],
+  "title": {
+    "text": "Hospital Resources per 100,000 Elderly, by State (2025)",
+    "subtitle": "Hospitals per 100k elderly = public hospitals ÷ population aged 65+ × 100,000. Data: ABS & AIHW (2025).",
+    "font": "Inter",
+    "fontWeight": "bold",
+    "subtitleFont": "Inter",
+    "subtitleFontSize": 12,
+    "subtitleColor": "#4b4b4b"
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 5},
+      "encoding": {
+        "y": {
+          "field": "state_name",
+          "type": "nominal",
+          "title": null,
+          "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}
+        },
+        "x": {
+          "field": "Hospitals_per_100k_elderly",
+          "type": "quantitative",
+          "title": "Hospitals per 100,000 elderly",
+          "axis": {"grid": true, "tickCount": 6, "format": ".1f"},
+          "scale": {"zero": true}
+        },
+        "color": {
+          "field": "Hospitals_per_100k_elderly",
+          "type": "quantitative",
+          "scale": {"scheme": "cividis"},
+          "legend": {"title": "Hospitals per 100k elderly"}
+        },
+        "tooltip": [
+          {"field": "state_name", "title": "State/Territory"},
+          {
+            "field": "hospitals_num",
+            "title": "Public hospitals",
+            "format": ","
+          },
+          {
+            "field": "elderly_pop",
+            "title": "Aged 65+ population",
+            "format": ","
+          },
+          {
+            "field": "Hospitals_per_100k_elderly",
+            "title": "Hospitals per 100k elderly",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "strokeDash": [6, 4],
+        "strokeWidth": 2,
+        "color": "#555"
+      },
+      "encoding": {
+        "x": {"field": "national_avg", "type": "quantitative"},
+        "y": {"value": 0},
+        "y2": {"value": 460}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontWeight": "bold",
+        "fontSize": 12,
+        "color": "#555",
+        "dx": 8,
+        "dy": -10
+      },
+      "encoding": {
+        "x": {"field": "national_avg", "type": "quantitative"},
+        "y": {"value": 0},
+        "text": {"value": "National average"}
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 6},
+      "encoding": {
+        "y": {
+          "field": "state_name",
+          "type": "nominal",
+          "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}
+        },
+        "x": {"field": "Hospitals_per_100k_elderly", "type": "quantitative"},
+        "text": {
+          "field": "Hospitals_per_100k_elderly",
+          "type": "quantitative",
+          "format": ".2f"
+        },
+        "color": {"value": "#2f2f2f"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"labelFont": "Inter", "titleFont": "Inter", "gridColor": "#e9e9e9"}
+  }
+}
