@@ -1,0 +1,193 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": {
+    "text": "Elderly Population and Public Hospitals Across Australia (2001–2025)",
+    "subtitle": "Choropleth: % aged 65+ (Cividis) • Bubble size: Hospitals (total / per 100k)",
+    "anchor": "start"
+  },
+  "width": 920,
+  "height": 620,
+  "projection": {"type": "mercator", "center": [134, -27], "scale": 900},
+  "params": [
+    {
+      "name": "metric",
+      "value": "total",
+      "bind": {
+        "input": "radio",
+        "options": ["total", "per100k"],
+        "labels": ["Hospitals (total)", "Hospitals per 100k"]
+      }
+    },
+    {
+      "name": "year_select",
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2001,
+        "max": 2024,
+        "step": 1,
+        "name": "Select year:"
+      }
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "year": "number",
+            "population_total": "number",
+            "percent_65plus": "number",
+            "hospitals_count": "number",
+            "hospitals_per_100k": "number",
+            "longitude": "number",
+            "latitude": "number"
+          }
+        }
+      },
+      "transform": [
+        {"filter": "datum.year == year_select"},
+        {
+          "lookup": "state_name",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/js/STE_2021_AUST_GDA2020.json",
+              "format": {"type": "topojson", "feature": "STE_2021_AUST_GDA2020"}
+            },
+            "key": "properties.STE_NAME21",
+            "fields": ["geometry"]
+          },
+          "as": ["geometry"]
+        },
+        {"filter": "datum.geometry != null"}
+      ],
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.8},
+      "encoding": {
+        "shape": {"field": "geometry", "type": "geojson"},
+        "color": {
+          "field": "percent_65plus",
+          "type": "quantitative",
+          "title": "% aged 65+",
+          "scale": {"scheme": "cividis"}
+        },
+        "tooltip": [
+          {"field": "state_name", "title": "State/Territory"},
+          {"field": "year", "title": "Year"},
+          {"field": "population_total", "title": "Population", "format": ","},
+          {
+            "field": "hospitals_count",
+            "title": "Hospitals (total)",
+            "format": ","
+          },
+          {
+            "field": "hospitals_per_100k",
+            "title": "Hospitals per 100k",
+            "format": ".2f"
+          },
+          {"field": "percent_65plus", "title": "% aged 65+", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {"filter": "toNumber(datum.year) == year_select"},
+        {
+          "calculate": "metric == 'per100k' ? toNumber(datum.hospitals_per_100k) : toNumber(datum.hospitals_count)",
+          "as": "metric_value_raw"
+        },
+        {
+          "calculate": "isValid(datum.metric_value_raw) && isFinite(datum.metric_value_raw) ? datum.metric_value_raw : null",
+          "as": "metric_value"
+        },
+        {"filter": "datum.metric_value != null"}
+      ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0.85,
+        "stroke": "#ffffff",
+        "strokeWidth": 0.9
+      },
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "size": {
+          "field": "metric_value",
+          "type": "quantitative",
+          "scale": {"type": "sqrt", "range": [100, 1800], "domainMin": 0},
+          "legend": {"title": "Hospital metric"}
+        },
+        "color": {"value": "#0b2e6f"},
+        "tooltip": [
+          {"field": "state_name", "title": "State/Territory"},
+          {"field": "year", "title": "Year"},
+          {"field": "population_total", "title": "Population", "format": ","},
+          {
+            "field": "hospitals_count",
+            "title": "Hospitals (total)",
+            "format": ","
+          },
+          {
+            "field": "hospitals_per_100k",
+            "title": "Hospitals per 100k",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [{"filter": "toNumber(datum.year) == year_select"}],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "fill": "#ffffff",
+        "stroke": "#0b2e6f",
+        "strokeWidth": 0.5,
+        "dy": -5
+      },
+      "encoding": {
+        "longitude": {"field": "longitude"},
+        "latitude": {"field": "latitude"},
+        "text": {"field": "abbr"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Source: AIHW (public hospitals) & ABS (population). 2001–2025."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 8,
+        "dy": -6,
+        "fontSize": 11,
+        "fill": "#6b7280"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 620},
+        "text": {"field": "note"}
+      }
+    }
+  ],
+  "config": {
+    "legend": {"orient": "right"},
+    "view": {"stroke": null},
+    "axis": {"labelFontSize": 12, "titleFontSize": 12}
+  }
+}
