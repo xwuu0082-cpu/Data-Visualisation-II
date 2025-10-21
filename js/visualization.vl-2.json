@@ -1,0 +1,165 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Australia: Ageing vs Public Hospitals (2001–2024). Toggle right-axis metric.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
+    "format": {"type": "csv"}
+  },
+  "width": 1100,
+  "height": 420,
+  "padding": {"top": 8, "left": 8, "right": 120, "bottom": 30},
+  "config": {
+    "background": "white",
+    "axis": {
+      "labelFont": "Inter, Arial, sans-serif",
+      "titleFont": "Inter, Arial, sans-serif",
+      "labelColor": "#333",
+      "titleColor": "#333",
+      "gridColor": "#eee",
+      "labelPadding": 6
+    }
+  },
+  "title": {
+    "text": "Australia’s Ageing Population vs Hospital Capacity (2001–2024)",
+    "subtitle": "Switch the hospital metric below. Shaded band: 2010–2020.",
+    "anchor": "start",
+    "font": "Inter, Arial, sans-serif",
+    "fontSize": 18,
+    "subtitleFontSize": 12
+  },
+  "params": [
+    {
+      "name": "maxYear",
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2001,
+        "max": 2024,
+        "step": 1,
+        "name": "Year ≤ "
+      }
+    },
+    {
+      "name": "metric",
+      "value": "count",
+      "bind": {
+        "input": "select",
+        "name": "Hospitals metric ",
+        "options": ["count", "per100k65"],
+        "labels": ["Total hospitals (count)", "Hospitals per 100k aged 65+"]
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "isValid(datum.year) && isValid(datum.population_total)"},
+    {"filter": "toNumber(datum.year) >= 2001 && toNumber(datum.year) <= 2024"},
+    {
+      "aggregate": [
+        {"op": "sum", "field": "population_total", "as": "population_total"},
+        {"op": "sum", "field": "population_65plus", "as": "population_65plus"},
+        {"op": "sum", "field": "hospitals_count", "as": "hospitals_count"}
+      ],
+      "groupby": ["year"]
+    },
+    {
+      "calculate": "datum.population_65plus / datum.population_total * 100",
+      "as": "percent_65plus"
+    },
+    {"filter": "toNumber(datum.year) <= maxYear"},
+    {"calculate": "toDate(datum.year + '-01-01')", "as": "yearDate"},
+    {
+      "calculate": "datum.hospitals_count / (datum.population_65plus/100000)",
+      "as": "hospitals_per100k65"
+    },
+    {
+      "calculate": "metric == 'per100k65' ? datum.hospitals_per100k65 : datum.hospitals_count",
+      "as": "hospitals_metric"
+    },
+    {
+      "calculate": "metric == 'per100k65' ? 'Hospitals per 100k aged 65+' : 'Total hospitals (count)'",
+      "as": "metric_label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rect", "opacity": 0.08},
+      "encoding": {
+        "x": {"field": "yearDate", "type": "temporal"},
+        "x2": {"value": "2020-12-31"},
+        "color": {"value": "#000"}
+      },
+      "transform": [
+        {
+          "filter": "toNumber(datum.year) >= 2010 && toNumber(datum.year) <= 2020"
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "line",
+        "point": true,
+        "strokeWidth": 3,
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {
+          "field": "yearDate",
+          "type": "temporal",
+          "axis": {"title": null, "tickCount": 10}
+        },
+        "y": {
+          "field": "percent_65plus",
+          "type": "quantitative",
+          "scale": {"domain": [12, 19.6], "nice": false},
+          "axis": {
+            "title": "% aged 65+",
+            "format": ".1f",
+            "tickCount": 8,
+            "grid": true
+          }
+        },
+        "color": {"value": "#E76F51"},
+        "tooltip": [
+          {"field": "year", "title": "Year"},
+          {"field": "percent_65plus", "title": "% aged 65+", "format": ".2f"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "point": true,
+        "strokeDash": [6, 4],
+        "strokeWidth": 2,
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {"field": "yearDate", "type": "temporal"},
+        "y": {
+          "field": "hospitals_metric",
+          "type": "quantitative",
+          "scale": {
+            "domain": {"expr": "metric == 'per100k65' ? [5,18] : [620,820]"},
+            "nice": false
+          },
+          "axis": {
+            "orient": "right",
+            "grid": false,
+            "tickCount": 7,
+            "offset": 16,
+            "title": {
+              "expr": "metric == 'per100k65' ? 'Hospitals per 100k aged 65+' : 'Public hospitals (count)'"
+            }
+          }
+        },
+        "color": {"value": "#264653"},
+        "tooltip": [
+          {"field": "year", "title": "Year"},
+          {"field": "metric_label", "title": "Metric"},
+          {"field": "hospitals_metric", "title": "Value", "format": ".2f"}
+        ]
+      }
+    }
+  ],
+  "resolve": {"scale": {"y": "independent"}}
+}
