@@ -94,8 +94,8 @@
     }
   ],
   "title": {
-    "text": "Association Between Population Ageing and Hospital Availability Across States, 2001–2024",
-    "subtitle": "Each bubble denotes a state or territory in the selected year. Bubble size reflects total population; position indicates the association between population ageing and hospital availability.",
+    "text": "Population Ageing vs Hospital Availability Across States (2001–2024)",
+    "subtitle": "Each bubble shows a state’s data for the year; size reflects population, position shows ageing vs hospital access.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
