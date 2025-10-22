@@ -1,165 +1,152 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Australia: Ageing vs Public Hospitals (2001–2024). Toggle right-axis metric.",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Trends in ageing population and hospital capacity in Australia (2001–2024).",
   "data": {
     "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
     "format": {"type": "csv"}
   },
-  "width": 1100,
-  "height": 420,
-  "padding": {"top": 8, "left": 8, "right": 120, "bottom": 30},
-  "config": {
-    "background": "white",
-    "axis": {
-      "labelFont": "Inter, Arial, sans-serif",
-      "titleFont": "Inter, Arial, sans-serif",
-      "labelColor": "#333",
-      "titleColor": "#333",
-      "gridColor": "#eee",
-      "labelPadding": 6
-    }
-  },
+  "width": 920,
+  "height": 460,
   "title": {
-    "text": "Australia’s Ageing Population vs Hospital Capacity (2001–2024)",
-    "subtitle": "Switch the hospital metric below. Shaded band: 2010–2020.",
+    "text": "Trends in Population Ageing and Hospital Capacity in Australia (2001–2025)",
+    "subtitle": "The proportion of Australians aged 65 and over has risen steadily, while hospital capacity has increased more slowly, revealing a widening gap between healthcare demand and supply.",
     "anchor": "start",
-    "font": "Inter, Arial, sans-serif",
-    "fontSize": 18,
-    "subtitleFontSize": 12
+    "fontSize": 20,
+    "subtitleFontSize": 13
   },
   "params": [
-    {
-      "name": "maxYear",
-      "value": 2024,
-      "bind": {
-        "input": "range",
-        "min": 2001,
-        "max": 2024,
-        "step": 1,
-        "name": "Year ≤ "
-      }
-    },
     {
       "name": "metric",
       "value": "count",
       "bind": {
         "input": "select",
-        "name": "Hospitals metric ",
+        "name": "Hospital Metric: ",
         "options": ["count", "per100k65"],
-        "labels": ["Total hospitals (count)", "Hospitals per 100k aged 65+"]
+        "labels": ["Total Hospitals (Count)", "Hospitals per 100,000 People Aged 65+"]
       }
     }
   ],
   "transform": [
-    {"filter": "isValid(datum.year) && isValid(datum.population_total)"},
-    {"filter": "toNumber(datum.year) >= 2001 && toNumber(datum.year) <= 2024"},
+    {"calculate": "toNumber(datum.year)", "as": "year_num"},
     {
       "aggregate": [
         {"op": "sum", "field": "population_total", "as": "population_total"},
         {"op": "sum", "field": "population_65plus", "as": "population_65plus"},
         {"op": "sum", "field": "hospitals_count", "as": "hospitals_count"}
       ],
-      "groupby": ["year"]
+      "groupby": ["year_num"]
     },
     {
       "calculate": "datum.population_65plus / datum.population_total * 100",
       "as": "percent_65plus"
     },
-    {"filter": "toNumber(datum.year) <= maxYear"},
-    {"calculate": "toDate(datum.year + '-01-01')", "as": "yearDate"},
     {
-      "calculate": "datum.hospitals_count / (datum.population_65plus/100000)",
+      "calculate": "datum.hospitals_count / (datum.population_65plus / 100000)",
       "as": "hospitals_per100k65"
     },
     {
       "calculate": "metric == 'per100k65' ? datum.hospitals_per100k65 : datum.hospitals_count",
-      "as": "hospitals_metric"
+      "as": "hospital_value"
     },
-    {
-      "calculate": "metric == 'per100k65' ? 'Hospitals per 100k aged 65+' : 'Total hospitals (count)'",
-      "as": "metric_label"
-    }
+    {"calculate": "toDate(datum.year_num + '-01-01')", "as": "yearDate"}
   ],
   "layer": [
     {
-      "mark": {"type": "rect", "opacity": 0.08},
+      "mark": {"type": "line", "color": "#E76F51", "point": true, "strokeWidth": 3},
       "encoding": {
-        "x": {"field": "yearDate", "type": "temporal"},
-        "x2": {"value": "2020-12-31"},
-        "color": {"value": "#000"}
-      },
-      "transform": [
-        {
-          "filter": "toNumber(datum.year) >= 2010 && toNumber(datum.year) <= 2020"
-        }
-      ]
-    },
-    {
-      "mark": {
-        "type": "line",
-        "point": true,
-        "strokeWidth": 3,
-        "interpolate": "monotone"
-      },
-      "encoding": {
-        "x": {
-          "field": "yearDate",
-          "type": "temporal",
-          "axis": {"title": null, "tickCount": 10}
-        },
+        "x": {"field": "yearDate", "type": "temporal", "axis": {"title": "Year"}},
         "y": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "scale": {"domain": [12, 19.6], "nice": false},
-          "axis": {
-            "title": "% aged 65+",
-            "format": ".1f",
-            "tickCount": 8,
-            "grid": true
-          }
+          "axis": {"title": "% of Population Aged 65 and Over", "grid": true}
         },
-        "color": {"value": "#E76F51"},
         "tooltip": [
-          {"field": "year", "title": "Year"},
-          {"field": "percent_65plus", "title": "% aged 65+", "format": ".2f"}
+          {"field": "year_num", "title": "Year"},
+          {"field": "percent_65plus", "title": "% Aged 65+", "format": ".2f"}
         ]
       }
     },
     {
       "mark": {
         "type": "line",
+        "color": "#264653",
         "point": true,
         "strokeDash": [6, 4],
-        "strokeWidth": 2,
-        "interpolate": "monotone"
+        "strokeWidth": 2
       },
       "encoding": {
         "x": {"field": "yearDate", "type": "temporal"},
         "y": {
-          "field": "hospitals_metric",
+          "field": "hospital_value",
           "type": "quantitative",
-          "scale": {
-            "domain": {"expr": "metric == 'per100k65' ? [5,18] : [620,820]"},
-            "nice": false
-          },
           "axis": {
             "orient": "right",
-            "grid": false,
-            "tickCount": 7,
-            "offset": 16,
             "title": {
-              "expr": "metric == 'per100k65' ? 'Hospitals per 100k aged 65+' : 'Public hospitals (count)'"
-            }
+              "expr": "metric == 'per100k65' ? 'Hospitals per 100,000 People Aged 65 and Over' : 'Total Public Hospitals (Count)'"
+            },
+            "grid": false
           }
         },
-        "color": {"value": "#264653"},
         "tooltip": [
-          {"field": "year", "title": "Year"},
-          {"field": "metric_label", "title": "Metric"},
-          {"field": "hospitals_metric", "title": "Value", "format": ".2f"}
+          {"field": "year_num", "title": "Year"},
+          {
+            "field": "hospital_value",
+            "title": {
+              "expr": "metric == 'per100k65' ? 'Hospitals per 100k Aged 65+' : 'Hospitals (Count)'"
+            },
+            "format": ".2f"
+          }
         ]
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Observation: Since 2015, the disparity between the growth of the ageing population and hospital capacity has widened, indicating that healthcare resources are not keeping pace with demographic change."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 8,
+        "dy": 5,
+        "fontSize": 12,
+        "fill": "#374151"
+      },
+      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 8,
+        "dy": -6,
+        "fontSize": 11,
+        "fill": "#6b7280"
+      },
+      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
     }
   ],
-  "resolve": {"scale": {"y": "independent"}}
+  "resolve": {"scale": {"y": "independent"}},
+  "config": {
+    "axis": {
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#333",
+      "titleColor": "#333"
+    },
+    "view": {"stroke": null}
+  }
 }
+
