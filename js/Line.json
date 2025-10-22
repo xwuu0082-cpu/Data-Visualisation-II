@@ -10,7 +10,7 @@
   "padding": { "top": 8, "left": 8, "right": 160, "bottom": 24 },
   "title": {
     "text": "Temporal Trends in Population Ageing and Hospital Capacity in Australia, 2001–2024",
-    "subtitle": "The share of residents aged 65 and over has increased steadily, whereas hospital capacity has expanded more slowly, indicating a growing imbalance between demand and supply.",
+    "subtitle": "The share of people aged 65+ has risen steadily, while hospital capacity grew more slowly, showing a growing gap between demand and supply.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
