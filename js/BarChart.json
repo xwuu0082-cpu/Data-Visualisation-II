@@ -1,8 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 900,
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "width": 920,
   "height": 460,
   "background": "white",
+  "padding": {"top": 8, "left": 8, "right": 120, "bottom": 30},
   "data": {
     "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/main/data/state_summary_all_years_ready_public_2001_2025.csv",
     "format": {"type": "csv"}
@@ -12,7 +13,7 @@
     {"calculate": "toNumber(datum.hospitals_count)", "as": "hospitals_num"},
     {"calculate": "toNumber(datum.population_65plus)", "as": "elderly_pop"},
     {
-      "calculate": "(isFinite(datum.hospitals_num) && isFinite(datum.elderly_pop) && datum.elderly_pop>0) ? (datum.hospitals_num/datum.elderly_pop)*100000 : null",
+      "calculate": "(isFinite(datum.hospitals_num) && isFinite(datum.elderly_pop) && datum.elderly_pop > 0) ? (datum.hospitals_num / datum.elderly_pop) * 100000 : null",
       "as": "Hospitals_per_100k_elderly"
     },
     {"filter": "isFinite(datum.Hospitals_per_100k_elderly)"},
@@ -27,13 +28,12 @@
     }
   ],
   "title": {
-    "text": "Hospital Resources per 100,000 Elderly, by State (2025)",
-    "subtitle": "Hospitals per 100k elderly = public hospitals ÷ population aged 65+ × 100,000. Data: ABS & AIHW (2025).",
-    "font": "Inter",
-    "fontWeight": "bold",
-    "subtitleFont": "Inter",
-    "subtitleFontSize": 12,
-    "subtitleColor": "#4b4b4b"
+    "text": "Distribution of Hospital Resources per 100,000 Older Residents by State (2024)",
+    "subtitle": "States with smaller hospital-to-elderly ratios may face greater healthcare strain as population ageing intensifies.",
+    "anchor": "start",
+    "font": "Inter, Arial, sans-serif",
+    "fontSize": 20,
+    "subtitleFontSize": 13
   },
   "layer": [
     {
@@ -48,7 +48,7 @@
         "x": {
           "field": "Hospitals_per_100k_elderly",
           "type": "quantitative",
-          "title": "Hospitals per 100,000 elderly",
+          "title": "Hospitals per 100,000 People Aged 65 and Over",
           "axis": {"grid": true, "tickCount": 6, "format": ".1f"},
           "scale": {"zero": true}
         },
@@ -56,23 +56,15 @@
           "field": "Hospitals_per_100k_elderly",
           "type": "quantitative",
           "scale": {"scheme": "cividis"},
-          "legend": {"title": "Hospitals per 100k elderly"}
+          "legend": {"title": "Hospitals per 100,000 Aged 65+"}
         },
         "tooltip": [
           {"field": "state_name", "title": "State/Territory"},
-          {
-            "field": "hospitals_num",
-            "title": "Public hospitals",
-            "format": ","
-          },
-          {
-            "field": "elderly_pop",
-            "title": "Aged 65+ population",
-            "format": ","
-          },
+          {"field": "hospitals_num", "title": "Public Hospitals", "format": ","},
+          {"field": "elderly_pop", "title": "Population Aged 65+", "format": ","},
           {
             "field": "Hospitals_per_100k_elderly",
-            "title": "Hospitals per 100k elderly",
+            "title": "Hospitals per 100,000 Aged 65+",
             "format": ".2f"
           }
         ]
@@ -104,7 +96,7 @@
       "encoding": {
         "x": {"field": "national_avg", "type": "quantitative"},
         "y": {"value": 0},
-        "text": {"value": "National average"}
+        "text": {"value": "National Average"}
       }
     },
     {
@@ -123,10 +115,63 @@
         },
         "color": {"value": "#2f2f2f"}
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Observation: States such as Tasmania and South Australia have lower hospital availability relative to their elderly populations, suggesting potential disparities in healthcare accessibility."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 8,
+        "dy": 10,
+        "fontSize": 12,
+        "fill": "#374151"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 510},
+        "text": {"field": "note"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 8,
+        "dy": -6,
+        "fontSize": 11,
+        "fill": "#6b7280"
+      },
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 520},
+        "text": {"field": "note"}
+      }
     }
   ],
   "config": {
     "view": {"stroke": null},
-    "axis": {"labelFont": "Inter", "titleFont": "Inter", "gridColor": "#e9e9e9"}
+    "axis": {
+      "labelFont": "Inter, Arial, sans-serif",
+      "titleFont": "Inter, Arial, sans-serif",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "gridColor": "#e9e9e9"
+    }
   }
 }
+
