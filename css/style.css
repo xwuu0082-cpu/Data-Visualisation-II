@@ -20,7 +20,7 @@ body{
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility
 }
 img,svg,video,canvas{display:block;max-width:100%;height:auto}
-.container{max-width:var(--container);margin-inline:auto;padding:clamp(18px,3vw,40px) clamp(14px,2.6vw,20px);overflow-x:clip}
+.container{max-width:var(--container);margin-inline:auto;padding:clamp(18px,3vw,40px) clamp(14px,2.6vw,20px);overflow-x:visible}
 h1,h2,h3{color:var(--fg);margin:0 0 var(--space-3);letter-spacing:.2px;text-wrap:balance}
 h1{font-weight:800;font-size:clamp(28px,2.8vw+12px,40px);text-align:center;margin-bottom:var(--space-5)}
 .lead{text-align:center;color:var(--fg-subtle);font-size:clamp(16px,.6vw+14px,19px);margin:0 0 var(--space-7);max-width:70ch;margin-inline:auto;text-wrap:pretty}
@@ -31,20 +31,19 @@ p{color:var(--fg-muted);margin:0 0 var(--space-4);max-width:80ch;text-wrap:prett
 .chart{
   background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:clamp(14px,2.2vw,22px) clamp(14px,2.2vw,22px) clamp(10px,2vw,18px);
-  margin:clamp(22px,4vw,42px) 0;box-shadow:var(--shadow)
+  margin:clamp(22px,4vw,42px) 0;box-shadow:var(--shadow);overflow:visible
 }
-.chart-title{font-weight:700;font-size:clamp(18px,.9vw+16px,22px);color:var(--fg);margin-bottom:2px}
+.chart-title{font-weight:700;font-size:clamp(18px,.9vw+16px,22px);color:var(--fg);margin-bottom:8px;white-space:normal;text-align:center}
 .chart-subtitle{color:var(--fg-subtle);font-size:clamp(14px,.5vw+12px,16px);margin-bottom:var(--space-3)}
 figure{margin:var(--space-2) 0}
 figcaption{color:var(--fg-subtle);font-size:.95rem;margin-top:var(--space-3)}
-.vis{width:100%;min-height:clamp(280px,42vh,520px);display:grid;place-items:center;overflow:hidden}
+.vis{width:100%;min-height:clamp(280px,42vh,520px);display:grid;place-items:center;overflow:visible}
 .vis>.vega-embed,.vis>svg,.vega-embed svg{width:100%!important;height:auto!important}
 #vis-scatter{
-  --scatter-aspect:4/3;--scatter-min:260px;--scatter-max:520px;
-  aspect-ratio:var(--scatter-aspect);min-height:var(--scatter-min);max-height:var(--scatter-max)
+  aspect-ratio:auto!important;min-height:clamp(320px,48vh,640px);max-height:none!important;overflow:visible!important
 }
-@media (min-width:992px){#vis-scatter{--scatter-aspect:16/10}}
-#vis-scatter .vega-embed,#vis-scatter svg{width:100%!important;height:auto!important;max-height:var(--scatter-max)!important;overflow:visible}
+@media (min-width:992px){#vis-scatter{aspect-ratio:auto!important}}
+#vis-scatter .vega-embed,#vis-scatter svg{width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important}
 section.chart:has(#vis-scatter){
   padding:14px 16px 12px;box-shadow:0 4px 16px rgba(0,0,0,.06)
 }
@@ -94,17 +93,18 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-7) 0}
   a::after{content:" (" attr(href) ")";font-size:9pt;color:#444}
 }
 .vega-actions{display:none!important}
-.vega-embed{overflow-x:hidden}
+.vega-embed{overflow:visible}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-#vis-heatmap .role-axis text{font-size:10px!important;paint-order:stroke;stroke:#fff;stroke-width:.8px}
+#vis-heatmap .role-axis text{font-size:11px!important;paint-order:stroke;stroke:#fff;stroke-width:.8px;transform:rotate(30deg);text-anchor:start}
 @media (prefers-color-scheme:dark){#vis-heatmap .role-axis text{stroke:#0b1220}}
 #vis-heatmap .role-axis .domain,#vis-heatmap .role-axis .tick{stroke-width:.8}
-@media (max-width:768px){#vis-heatmap .role-axis text{font-size:9px!important}}
-.vis{display:flex;flex-direction:column;align-items:stretch;overflow-x:hidden;overflow-y:visible}
+@media (max-width:768px){#vis-heatmap .role-axis text{font-size:9px!important;transform:rotate(45deg)}}
+.vis{display:flex;flex-direction:column;align-items:stretch;overflow:visible}
 .vis .vega-bindings{order:0;width:100%;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start;margin:4px 0 8px;font-size:14px}
 .vis .vega-embed{order:1;width:100%}
-#vis-scatter{aspect-ratio:auto!important;max-height:none!important;min-height:clamp(260px,36vh,520px)}
+#vis-scatter{aspect-ratio:auto!important;max-height:none!important;min-height:clamp(320px,48vh,640px)}
 #vis-scatter .vega-embed,#vis-scatter svg{height:auto!important;max-height:none!important}
 .vis .vega-bindings input[type="range"]{width:min(520px,100%)}
 .vis .vega-bindings select,.vis .vega-bindings input{border:1px solid var(--border);border-radius:8px;padding:6px 10px}
 .vega-embed svg{overflow:visible}
+
