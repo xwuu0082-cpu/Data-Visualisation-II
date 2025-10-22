@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heatmap showing hospitals per 100,000 residents across Australian states from 2001 to 2024.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv"
+  },
+  "transform": [
+    {"filter": "datum.year >= 2001 && datum.year <= 2024"},
+    {
+      "filter": "datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"
+    }
+  ],
+  "width": 700,
+  "height": 350,
+  "params": [
+    {"name": "highlight", "select": {"type": "point", "on": "mouseover"}}
+  ],
+  "mark": {"type": "rect", "stroke": "white", "strokeWidth": 0.5},
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": "Year",
+      "axis": {"labelAngle": 0}
+    },
+    "y": {
+      "field": "state_name",
+      "type": "nominal",
+      "title": "State/Territory",
+      "sort": [
+        "New South Wales",
+        "Victoria",
+        "Queensland",
+        "South Australia",
+        "Western Australia",
+        "Tasmania",
+        "Northern Territory",
+        "Australian Capital Territory"
+      ]
+    },
+    "color": {
+      "field": "hospitals_per_100k",
+      "type": "quantitative",
+      "title": "Hospitals per 100,000 Residents",
+      "scale": {"scheme": "cividis", "domain": [2, 5]}
+    },
+    "opacity": {"condition": {"param": "highlight", "value": 1}, "value": 0.85},
+    "tooltip": [
+      {"field": "state_name", "type": "nominal", "title": "State"},
+      {"field": "year", "type": "ordinal", "title": "Year"},
+      {
+        "field": "percent_65plus",
+        "type": "quantitative",
+        "title": "% Aged 65+"
+      },
+      {
+        "field": "hospitals_count",
+        "type": "quantitative",
+        "title": "Public Hospitals"
+      },
+      {
+        "field": "hospitals_per_100k",
+        "type": "quantitative",
+        "title": "Hospitals / 100k Residents"
+      }
+    ]
+  },
+  "title": {
+    "text": "Hospital Availability Across States (2001–2024)",
+    "subtitle": "Each cell shows hospitals per 100,000 residents. Darker shades indicate higher availability.",
+    "fontSize": 18,
+    "subtitleFontSize": 13,
+    "anchor": "start"
+  },
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"labelFontSize": 11, "titleFontSize": 13},
+    "legend": {"titleFontSize": 13, "labelFontSize": 11}
+  }
+}
