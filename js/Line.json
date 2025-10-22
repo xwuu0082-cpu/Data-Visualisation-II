@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Trends in ageing population and hospital capacity in Australia (2001–2024).",
+  "description": "National trends in population ageing and hospital capacity, 2001–2025.",
   "data": {
     "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
     "format": {"type": "csv"}
@@ -8,8 +8,8 @@
   "width": 920,
   "height": 460,
   "title": {
-    "text": "Trends in Population Ageing and Hospital Capacity in Australia (2001–2025)",
-    "subtitle": "The proportion of Australians aged 65 and over has risen steadily, while hospital capacity has increased more slowly, revealing a widening gap between healthcare demand and supply.",
+    "text": "Temporal Trends in Population Ageing and Hospital Capacity in Australia, 2001–2024",
+    "subtitle": "The share of residents aged 65 and over has increased steadily, whereas hospital capacity has expanded more slowly, indicating a growing imbalance between demand and supply.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -20,9 +20,9 @@
       "value": "count",
       "bind": {
         "input": "select",
-        "name": "Hospital Metric: ",
+        "name": "Hospital Capacity Metric: ",
         "options": ["count", "per100k65"],
-        "labels": ["Total Hospitals (Count)", "Hospitals per 100,000 People Aged 65+"]
+        "labels": ["Public Hospitals (Total)", "Public Hospitals per 100,000 People Aged 65 and Over"]
       }
     }
   ],
@@ -36,18 +36,9 @@
       ],
       "groupby": ["year_num"]
     },
-    {
-      "calculate": "datum.population_65plus / datum.population_total * 100",
-      "as": "percent_65plus"
-    },
-    {
-      "calculate": "datum.hospitals_count / (datum.population_65plus / 100000)",
-      "as": "hospitals_per100k65"
-    },
-    {
-      "calculate": "metric == 'per100k65' ? datum.hospitals_per100k65 : datum.hospitals_count",
-      "as": "hospital_value"
-    },
+    {"calculate": "datum.population_65plus / datum.population_total * 100", "as": "percent_65plus"},
+    {"calculate": "datum.hospitals_count / (datum.population_65plus / 100000)", "as": "hospitals_per100k65"},
+    {"calculate": "metric == 'per100k65' ? datum.hospitals_per100k65 : datum.hospitals_count", "as": "hospital_value"},
     {"calculate": "toDate(datum.year_num + '-01-01')", "as": "yearDate"}
   ],
   "layer": [
@@ -58,31 +49,26 @@
         "y": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "axis": {"title": "% of Population Aged 65 and Over", "grid": true}
+          "axis": {"title": "Population Aged 65 and Over (%)", "grid": true}
         },
         "tooltip": [
           {"field": "year_num", "title": "Year"},
-          {"field": "percent_65plus", "title": "% Aged 65+", "format": ".2f"}
+          {"field": "percent_65plus", "title": "Aged 65+ (%)", "format": ".2f"}
         ]
       }
     },
     {
-      "mark": {
-        "type": "line",
-        "color": "#264653",
-        "point": true,
-        "strokeDash": [6, 4],
-        "strokeWidth": 2
-      },
+      "mark": {"type": "line", "color": "#264653", "point": true, "strokeDash": [6, 4], "strokeWidth": 2},
       "encoding": {
         "x": {"field": "yearDate", "type": "temporal"},
         "y": {
           "field": "hospital_value",
           "type": "quantitative",
+          "scale": {"domain": {"expr": "metric == 'count' ? [300, 800] : null"}}, 
           "axis": {
             "orient": "right",
             "title": {
-              "expr": "metric == 'per100k65' ? 'Hospitals per 100,000 People Aged 65 and Over' : 'Total Public Hospitals (Count)'"
+              "expr": "metric == 'per100k65' ? 'Public Hospitals per 100,000 People Aged 65 and Over' : 'Public Hospitals (Total)'"
             },
             "grid": false
           }
@@ -92,7 +78,7 @@
           {
             "field": "hospital_value",
             "title": {
-              "expr": "metric == 'per100k65' ? 'Hospitals per 100k Aged 65+' : 'Hospitals (Count)'"
+              "expr": "metric == 'per100k65' ? 'Hospitals per 100k (Aged 65+)' : 'Public Hospitals (Total)'"
             },
             "format": ".2f"
           }
@@ -103,26 +89,7 @@
       "data": {
         "values": [
           {
-            "note": "Observation: Since 2015, the disparity between the growth of the ageing population and hospital capacity has widened, indicating that healthcare resources are not keeping pace with demographic change."
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "dx": 8,
-        "dy": 5,
-        "fontSize": 12,
-        "fill": "#374151"
-      },
-      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
+            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW); Australian Bureau of Statistics (ABS), 2001–2025."
           }
         ]
       },
@@ -135,7 +102,11 @@
         "fontSize": 11,
         "fill": "#6b7280"
       },
-      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 510},
+        "text": {"field": "note"}
+      }
     }
   ],
   "resolve": {"scale": {"y": "independent"}},
@@ -149,4 +120,3 @@
     "view": {"stroke": null}
   }
 }
-
