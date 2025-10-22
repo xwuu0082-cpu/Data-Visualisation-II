@@ -16,7 +16,7 @@
       "filter": "toNumber(datum.year) == Year && datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"
     }
   ],
-  "width": 760,
+  "width": 920,
   "height": 480,
   "layer": [
     {
@@ -25,56 +25,34 @@
         "x": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "title": "Elderly population (65+) %",
+          "title": "Population Aged 65 and Over (%)",
           "scale": {"nice": true}
         },
         "y": {
           "field": "hospitals_per_100k",
           "type": "quantitative",
-          "title": "Public hospitals per 100,000 residents",
+          "title": "Public Hospitals per 100,000 Residents",
           "scale": {"nice": true}
         },
         "size": {
           "field": "population_total",
           "type": "quantitative",
-          "title": "Total population",
+          "title": "Total Population",
           "scale": {"range": [60, 1600]}
         },
         "color": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "title": "65+ %",
+          "title": "% Aged 65+",
           "scale": {"scheme": "cividis"}
         },
         "tooltip": [
-          {
-            "field": "state_name",
-            "type": "nominal",
-            "title": "State/Territory"
-          },
+          {"field": "state_name", "type": "nominal", "title": "State/Territory"},
           {"field": "year", "type": "quantitative", "title": "Year"},
-          {
-            "field": "percent_65plus",
-            "type": "quantitative",
-            "title": "65+ %",
-            "format": ".1f"
-          },
-          {
-            "field": "hospitals_per_100k",
-            "type": "quantitative",
-            "title": "Hospitals /100k",
-            "format": ".2f"
-          },
-          {
-            "field": "hospitals_count",
-            "type": "quantitative",
-            "title": "Hospitals (total)"
-          },
-          {
-            "field": "population_total",
-            "type": "quantitative",
-            "title": "Population (total)"
-          }
+          {"field": "percent_65plus", "type": "quantitative", "title": "% Aged 65+", "format": ".1f"},
+          {"field": "hospitals_per_100k", "type": "quantitative", "title": "Hospitals per 100k", "format": ".2f"},
+          {"field": "hospitals_count", "type": "quantitative", "title": "Hospitals (Total)"},
+          {"field": "population_total", "type": "quantitative", "title": "Population (Total)"}
         ]
       }
     },
@@ -89,11 +67,7 @@
     },
     {
       "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}
-          ]
-        }
+        {"aggregate": [{"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}]}
       ],
       "mark": {"type": "rule", "strokeDash": [6, 4], "opacity": 0.6},
       "encoding": {
@@ -104,11 +78,7 @@
     },
     {
       "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "percent_65plus", "as": "xMean"}
-          ]
-        }
+        {"aggregate": [{"op": "mean", "field": "percent_65plus", "as": "xMean"}]}
       ],
       "mark": {"type": "rule", "strokeDash": [6, 4], "opacity": 0.6},
       "encoding": {
@@ -132,19 +102,9 @@
         "y": {"field": "yMean", "type": "quantitative"},
         "color": {"value": "black"},
         "tooltip": [
-          {"value": "National average", "title": "Label"},
-          {
-            "field": "xMean",
-            "type": "quantitative",
-            "title": "65+ % (mean)",
-            "format": ".2f"
-          },
-          {
-            "field": "yMean",
-            "type": "quantitative",
-            "title": "Hospitals /100k (mean)",
-            "format": ".2f"
-          }
+          {"value": "National Average", "title": "Label"},
+          {"field": "xMean", "type": "quantitative", "title": "Mean % Aged 65+", "format": ".2f"},
+          {"field": "yMean", "type": "quantitative", "title": "Mean Hospitals per 100k", "format": ".2f"}
         ]
       }
     },
@@ -157,24 +117,56 @@
           ]
         }
       ],
-      "mark": {
-        "type": "text",
-        "dx": 8,
-        "dy": -8,
-        "fontSize": 12,
-        "fontWeight": "bold"
-      },
+      "mark": {"type": "text", "dx": 8, "dy": -8, "fontSize": 12, "fontWeight": "bold"},
       "encoding": {
         "x": {"field": "xMean", "type": "quantitative"},
         "y": {"field": "yMean", "type": "quantitative"},
-        "text": {"value": "National average"},
+        "text": {"value": "National Average"},
         "color": {"value": "black"}
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Observation: The scatter indicates a weak or even negative correlation between ageing and hospital availability. Several older states show lower hospital capacity per capita, revealing uneven healthcare resource distribution across Australia."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 8,
+        "dy": 10,
+        "fontSize": 12,
+        "fill": "#374151"
+      },
+      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 8,
+        "dy": -6,
+        "fontSize": 11,
+        "fill": "#6b7280"
+      },
+      "encoding": {"x": {"value": 0}, "y": {"value": 535}, "text": {"field": "note"}}
     }
   ],
   "title": {
-    "text": "Public Hospitals vs Elderly Population by State (2001–2024)",
-    "subtitle": "Each bubble represents a state or territory — bubble size shows total population"
+    "text": "Relationship Between Population Ageing and Hospital Availability Across States (2001–2024)",
+    "subtitle": "Each bubble represents a state or territory in the selected year. Bubble size corresponds to total population, while position indicates the relationship between ageing and hospital availability."
   },
   "config": {
     "view": {"stroke": null},
