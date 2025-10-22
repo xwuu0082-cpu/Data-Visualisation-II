@@ -1,217 +1,321 @@
-/* === Base Typography & Colors === */
-body {
-  font-family: 'Inter', 'Open Sans', sans-serif;
-  background-color: #f8fafc;
-  color: #1f2937;
+/* ================================
+   Foundation
+================================== */
+:root{
+  /* Color system (light) */
+  --bg: #ffffff;
+  --bg-subtle: #f8fafc;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --shadow: 0 8px 28px rgba(15, 23, 42, .08);
+
+  --fg: #111827;
+  --fg-muted: #374151;
+  --fg-subtle: #6b7280;
+  --brand: #0ea5e9;     /* cyan-500 */
+  --brand-strong: #0284c7;
+  --accent: #2563eb;    /* blue-600 */
+  --accent-strong: #1d4ed8;
+
+  /* Typography */
+  --font-sans: "Inter", "Open Sans", "Roboto", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+
+  /* Sizing */
+  --container: 1120px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  /* Rhythm */
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+  --space-8: 2.5rem;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1220;
+    --bg-subtle: #0f172a;
+    --card: #0f172a;
+    --border: #1f2937;
+    --shadow: 0 12px 30px rgba(2, 6, 23, .55);
+
+    --fg: #e5e7eb;
+    --fg-muted: #cbd5e1;
+    --fg-subtle: #94a3b8;
+    --brand: #22d3ee;
+    --brand-strong: #06b6d4;
+    --accent: #60a5fa;
+    --accent-strong: #3b82f6;
+  }
+}
+
+/* Global reset + typography */
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+html{ hanging-punctuation: first last; text-size-adjust: 100%; }
+
+body{
   margin: 0;
-  padding: 0;
-  line-height: 1.7;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  font-size: clamp(15px, .95vw + 12px, 17px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* === Layout Container === */
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 50px 20px;
+img, svg, video, canvas{ display:block; max-width:100%; height:auto; }
+
+/* Container */
+.container{
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: clamp(18px, 3vw, 40px) clamp(14px, 2.6vw, 20px);
+  overflow-x: clip;
 }
 
-/* === Headings === */
-h1, h2, h3 {
-  color: #111827;
+/* ================================
+   Headings & Text
+================================== */
+h1, h2, h3{
+  color: var(--fg);
+  margin: 0 0 var(--space-3);
+  letter-spacing: .2px;
+  text-wrap: balance;
+}
+
+h1{
+  font-weight: 800;
+  font-size: clamp(28px, 2.8vw + 12px, 40px);
+  text-align: center;
+  margin-bottom: var(--space-5);
+}
+
+.lead{
+  text-align: center;
+  color: var(--fg-subtle);
+  font-size: clamp(16px, .6vw + 14px, 19px);
+  margin: 0 0 var(--space-7);
+  max-width: 70ch;
+  margin-inline: auto;
+  text-wrap: pretty;
+}
+
+h2{
+  font-weight: 750;
+  font-size: clamp(22px, 1.1vw + 18px, 28px);
+  margin-top: clamp(28px, 4vw, 56px);
+  padding-left: 12px;
+  border-left: 6px solid var(--accent);
+}
+
+h3{
   font-weight: 700;
-  line-height: 1.3;
-  margin-bottom: 12px;
+  font-size: clamp(18px, .8vw + 14px, 22px);
+  color: var(--accent);
+  margin-top: var(--space-5);
 }
 
-h1 {
-  font-size: 38px;
-  text-align: center;
-  margin-bottom: 40px;
-  color: #0f172a;
+p{
+  color: var(--fg-muted);
+  margin: 0 0 var(--space-4);
+  max-width: 80ch;
+  text-wrap: pretty;
 }
 
-h2 {
-  font-size: 26px;
-  margin-top: 60px;
-  border-left: 5px solid #2563eb;
-  padding-left: 14px;
+/* Small meta text */
+.meta{
+  color: var(--fg-subtle);
+  font-size: .92rem;
 }
 
-h3 {
-  font-size: 20px;
-  color: #2563eb;
-  margin-top: 25px;
+/* ================================
+   Chart Cards & Figures
+================================== */
+.chart{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(14px, 2.2vw, 22px) clamp(14px, 2.2vw, 22px) clamp(10px, 2vw, 18px);
+  margin: clamp(22px, 4vw, 42px) 0;
+  box-shadow: var(--shadow);
 }
 
-/* === Text Elements === */
-p {
-  font-size: 16px;
-  color: #374151;
-  margin-bottom: 18px;
-  line-height: 1.75;
+.chart-title{
+  font-weight: 700;
+  font-size: clamp(18px, .9vw + 16px, 22px);
+  color: var(--fg);
+  margin-bottom: 2px;
 }
 
-.lead {
-  text-align: center;
-  font-size: 18px;
-  color: #6b7280;
-  max-width: 700px;
-  margin: 0 auto 50px;
+.chart-subtitle{
+  color: var(--fg-subtle);
+  font-size: clamp(14px, .5vw + 12px, 16px);
+  margin-bottom: var(--space-3);
 }
 
-/* === Chart Sections === */
-.chart {
-  background-color: #ffffff;
-  border-radius: 18px;
-  padding: 28px 30px 22px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
-  margin: 50px 0;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+figure{ margin: var(--space-2) 0; }
+figcaption{
+  color: var(--fg-subtle);
+  font-size: .95rem;
+  margin-top: var(--space-3);
 }
 
-.chart:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
-}
-
-.chart-title {
-  font-size: 21px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 6px;
-}
-
-.chart-subtitle {
-  color: #6b7280;
-  font-size: 15px;
-  margin-bottom: 14px;
-}
-
-/* === Visual Container === */
-.vis {
+/* Visualisation container (vega-embed targets) */
+.vis{
   width: 100%;
-  max-width: 950px;
-  margin: 0 auto;
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
-/* === Caption & Source === */
-.caption {
-  color: #6b7280;
-  font-size: 14px;
-  margin-top: 12px;
+/* Ensure SVG/Fit behavior from vega-embed */
+.vis > .vega-embed,
+.vis > svg,
+.vega-embed svg{
+  width: 100% !important;
+  height: auto !important;
 }
 
-.source {
-  color: #9ca3af;
-  font-size: 13px;
-  margin-top: 6px;
+/* Source note right-aligned within card */
+.source{
+  color: var(--fg-subtle);
+  font-size: .9rem;
+  margin-top: var(--space-2);
   text-align: right;
-  font-style: italic;
 }
 
-/* === Interactive Controls === */
-.controls {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
+/* ================================
+   Controls (buttons, selects)
+================================== */
+.controls{
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: var(--space-3);
 }
 
-button {
-  background-color: #2563eb;
-  color: white;
-  border: none;
+button, .btn{
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
   border-radius: 999px;
-  padding: 8px 18px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
-}
-
-select {
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 15px;
-}
-
-/* === Footer === */
-footer {
-  text-align: center;
-  color: #6b7280;
-  font-size: 14px;
-  margin-top: 80px;
-  border-top: 1px solid #e5e7eb;
-  padding-top: 20px;
-  line-height: 1.5;
-}
-
-/* === Utility Classes === */
-.center {
-  text-align: center;
-}
-
-.highlight {
-  color: #f59e0b;
+  padding: 9px 16px;
   font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, .25);
+}
+button:hover{ background: var(--accent-strong); transform: translateY(-1px); }
+button:active{ transform: translateY(0); }
+button:focus-visible{
+  outline: 3px solid color-mix(in oklab, var(--accent) 70%, white);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
-hr {
+select{
+  appearance:none;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 34px 8px 12px;
+  font-size: 15px;
+  line-height: 1.2;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg-subtle) 50%),
+    linear-gradient(135deg, var(--fg-subtle) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 18px) calc(1.05em),
+    calc(100% - 12px) calc(1.05em),
+    100% 0;
+  background-size:
+    6px 6px, 6px 6px, 2.2em 2.2em;
+  background-repeat: no-repeat;
+}
+select:focus-visible{ outline: 3px solid color-mix(in oklab, var(--brand) 65%, white); outline-offset: 2px; }
+
+/* ================================
+   Utilities & Layout helpers
+================================== */
+.center{ text-align:center; }
+.highlight{ color: #f59e0b; font-weight: 800; }
+hr{
   border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 50px 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-7) 0;
 }
 
-/* === Responsive Design === */
-@media (max-width: 768px) {
-  .container {
-    padding: 25px;
-  }
-
-  h1 {
-    font-size: 30px;
-  }
-
-  h2 {
-    font-size: 22px;
-  }
-
-  p {
-    font-size: 15px;
-  }
-
-  .chart {
-    padding: 20px;
-  }
+/* Grid helper for two-column notes if needed */
+.grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+@media (min-width: 900px){
+  .grid{ grid-template-columns: 1.2fr .8fr; }
 }
 
-@media (max-width: 480px) {
-  h1 {
-    font-size: 26px;
-  }
-  .chart-title {
-    font-size: 18px;
-  }
-  .lead {
-    font-size: 16px;
-  }
+/* Screen-size tuning */
+@media (max-width: 768px){
+  h1{ font-size: clamp(26px, 6.5vw, 32px); }
+  .chart{ padding: 14px; }
+  .vis{ min-height: 300px; }
 }
 
-/* === Print Mode === */
-@media print {
-  body {
-    background-color: #ffffff;
-    color: #000000;
+/* Motion preference */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+/* ================================
+   Print styles (clean, high-contrast)
+================================== */
+@media print{
+  :root{
+    --bg:#ffffff; --card:#ffffff; --border:#cfcfcf; --fg:#000; --fg-muted:#111; --fg-subtle:#333;
+    --shadow:none;
   }
-  .chart {
-    box-shadow: none;
-    border: 1px solid #ccc;
+  body{ color:#000; background:#fff; font-size: 12pt; line-height:1.5; }
+  .container{ max-width: none; padding: 12mm; }
+  .chart{
+    box-shadow: none !important;
+    border: 1px solid var(--border);
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+    margin: 8mm 0;
   }
+  .vis{ min-height: 0; }
+  a::after{ content:" (" attr(href) ")"; font-size: 9pt; color:#444; }
+}
+
+/* ================================
+   Vega-Embed niceties
+================================== */
+/* hide default action toolbar just in case */
+.vega-actions{ display:none !important; }
+/* prevent accidental horizontal scroll from large legends */
+.vega-embed{ overflow-x: hidden; }
+
+/* Accessible-only text helper */
+.sr-only{
+  position:absolute !important;
+  width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
 
