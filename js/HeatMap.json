@@ -9,7 +9,7 @@
     { "filter": "toNumber(datum.year) >= 2001 && toNumber(datum.year) <= 2024" },
     { "filter": "datum.state_name != 'Australia' && datum.state_name != 'Other Territories'" }
   ],
-  "width": 920,
+  "width": 1020,
   "height": 580,
   "mark": { "type": "rect", "stroke": "white", "strokeWidth": 0.5 },
   "encoding": {
