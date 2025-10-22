@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Australia’s Ageing & Hospital Capacity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+<main class="container">
+  <h1>Australia’s Ageing & Hospital Capacity</h1>
+  <p class="lead">Are public hospitals keeping up with an ageing population across Australia from 2001 to 2025?</p>
+
+  <section class="chart">
+    <div class="chart-title">Spatial Overview: Where Are Older Populations?</div>
+    <div class="chart-subtitle">Choropleth showing % aged 65+ and hospital availability by state</div>
+    <div id="vis-map" class="vis"></div>
+    <p class="caption">Darker shades indicate higher % of residents aged 65+. Circle size or colour represents public hospitals.</p>
+    <p class="source">Data: ABS; AIHW (2001–2025)</p>
+  </section>
+
+  <section class="chart">
+    <div class="chart-title">Trends Over Time: Ageing vs Hospitals</div>
+    <div class="chart-subtitle">National % aged 65+ compared with total public hospitals (2001–2025)</div>
+    <div id="vis-line" class="vis"></div>
+    <p class="caption">Elderly population has grown faster than hospital numbers.</p>
+    <p class="source">Data: ABS; AIHW (2001–2025)</p>
+  </section>
+
+  <section class="chart">
+    <div class="chart-title">State Comparison: 2025 Readiness</div>
+    <div class="chart-subtitle">Hospitals per 100,000 elderly residents by state</div>
+    <div id="vis-bar" class="vis"></div>
+    <p class="caption">Values sorted to highlight highest and lowest availability relative to ageing.</p>
+    <p class="source">Data: ABS; AIHW (2025)</p>
+  </section>
+
+  <section class="chart">
+    <div class="chart-title">Relationship: Ageing vs Availability</div>
+    <div class="chart-subtitle">Elderly percentage vs hospitals per 100,000 elderly (2025)</div>
+    <div id="vis-scatter" class="vis"></div>
+    <p class="caption">Each point is a state or territory; size can reflect total population.</p>
+    <p class="source">Data: ABS; AIHW (2025)</p>
+  </section>
+
+  <section class="chart">
+    <div class="chart-title">Pattern Over Time by State</div>
+    <div class="chart-subtitle">Heatmap of hospitals per 100,000 elderly across states and years</div>
+    <div id="vis-heatmap" class="vis"></div>
+    <p class="caption">Darker cells indicate higher availability; patterns reveal uneven progress.</p>
+    <p class="source">Data: ABS; AIHW (2001–2025)</p>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Conclusion</h2>
+    <p>Australia’s elderly population has risen steadily since 2001, outpacing growth in public hospitals. State-level readiness varies markedly, with some states lagging behind national averages. The combined spatial, temporal, comparative and relational views show that healthcare capacity has not uniformly adapted to ageing.</p>
+  </section>
+
+  <footer>
+    <p>Author: Your Name • Semester 2, 2025 • Monash University</p>
+    <p>Dataset: <span class="highlight">state_summary_all_years_ready_public_2001_2025.csv</span> • Source: ABS, AIHW</p>
+  </footer>
+</main>
+
+<script>
+vegaEmbed("#vis-map", "js/map.json", {actions: false});
+vegaEmbed("#vis-line", "js/line.json", {actions: false});
+vegaEmbed("#vis-bar", "js/bar.json", {actions: false});
+vegaEmbed("#vis-scatter", "js/scatter.json", {actions: false});
+vegaEmbed("#vis-heatmap", "js/heatmap.json", {actions: false});
+</script>
+</body>
+</html>
