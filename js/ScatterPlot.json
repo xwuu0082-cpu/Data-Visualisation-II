@@ -5,16 +5,10 @@
     "format": {"type": "csv"}
   },
   "params": [
-    {
-      "name": "Year",
-      "value": 2024,
-      "bind": {"input": "range", "min": 2001, "max": 2024, "step": 1}
-    }
+    {"name": "Year", "value": 2024, "bind": {"input": "range", "min": 2001, "max": 2024, "step": 1}}
   ],
   "transform": [
-    {
-      "filter": "toNumber(datum.year) == Year && datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"
-    }
+    {"filter": "toNumber(datum.year) == Year && datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"}
   ],
   "width": 920,
   "height": 480,
@@ -22,36 +16,21 @@
     {
       "mark": {"type": "circle", "opacity": 0.9, "tooltip": true},
       "encoding": {
-        "x": {
-          "field": "percent_65plus",
-          "type": "quantitative",
-          "title": "Population Aged 65 and Over (%)",
-          "scale": {"nice": true}
-        },
-        "y": {
-          "field": "hospitals_per_100k",
-          "type": "quantitative",
-          "title": "Public Hospitals per 100,000 Residents",
-          "scale": {"nice": true}
-        },
-        "size": {
-          "field": "population_total",
-          "type": "quantitative",
-          "title": "Total Population",
-          "scale": {"range": [60, 1600]}
-        },
+        "x": {"field": "percent_65plus", "type": "quantitative", "title": "Population Aged 65 and Over (%)", "scale": {"nice": true}},
+        "y": {"field": "hospitals_per_100k", "type": "quantitative", "title": "Public Hospitals per 100,000 Residents", "scale": {"nice": true}},
+        "size": {"field": "population_total", "type": "quantitative", "title": "Total Population", "scale": {"range": [60, 1600]}},
         "color": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "title": "% Aged 65+",
-          "scale": {"scheme": "cividis"}
+          "title": "Aged 65+ (%)",
+          "scale": {"scheme": {"name": "cividis", "extent": [0.25, 1]}}
         },
         "tooltip": [
           {"field": "state_name", "type": "nominal", "title": "State/Territory"},
           {"field": "year", "type": "quantitative", "title": "Year"},
-          {"field": "percent_65plus", "type": "quantitative", "title": "% Aged 65+", "format": ".1f"},
-          {"field": "hospitals_per_100k", "type": "quantitative", "title": "Hospitals per 100k", "format": ".2f"},
-          {"field": "hospitals_count", "type": "quantitative", "title": "Hospitals (Total)"},
+          {"field": "percent_65plus", "type": "quantitative", "title": "Aged 65+ (%)", "format": ".1f"},
+          {"field": "hospitals_per_100k", "type": "quantitative", "title": "Hospitals per 100,000 Residents", "format": ".2f"},
+          {"field": "hospitals_count", "type": "quantitative", "title": "Public Hospitals (Total)"},
           {"field": "population_total", "type": "quantitative", "title": "Population (Total)"}
         ]
       }
@@ -66,36 +45,17 @@
       }
     },
     {
-      "transform": [
-        {"aggregate": [{"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}]}
-      ],
+      "transform": [{"aggregate": [{"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}]}],
       "mark": {"type": "rule", "strokeDash": [6, 4], "opacity": 0.6},
-      "encoding": {
-        "y": {"field": "yMean", "type": "quantitative"},
-        "size": {"value": 2},
-        "color": {"value": "#555"}
-      }
+      "encoding": {"y": {"field": "yMean", "type": "quantitative"}, "size": {"value": 2}, "color": {"value": "#555"}}
     },
     {
-      "transform": [
-        {"aggregate": [{"op": "mean", "field": "percent_65plus", "as": "xMean"}]}
-      ],
+      "transform": [{"aggregate": [{"op": "mean", "field": "percent_65plus", "as": "xMean"}]}],
       "mark": {"type": "rule", "strokeDash": [6, 4], "opacity": 0.6},
-      "encoding": {
-        "x": {"field": "xMean", "type": "quantitative"},
-        "size": {"value": 2},
-        "color": {"value": "#555"}
-      }
+      "encoding": {"x": {"field": "xMean", "type": "quantitative"}, "size": {"value": 2}, "color": {"value": "#555"}}
     },
     {
-      "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "percent_65plus", "as": "xMean"},
-            {"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}
-          ]
-        }
-      ],
+      "transform": [{"aggregate": [{"op": "mean", "field": "percent_65plus", "as": "xMean"}, {"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}]}],
       "mark": {"type": "point", "filled": true, "size": 220},
       "encoding": {
         "x": {"field": "xMean", "type": "quantitative"},
@@ -103,75 +63,23 @@
         "color": {"value": "black"},
         "tooltip": [
           {"value": "National Average", "title": "Label"},
-          {"field": "xMean", "type": "quantitative", "title": "Mean % Aged 65+", "format": ".2f"},
-          {"field": "yMean", "type": "quantitative", "title": "Mean Hospitals per 100k", "format": ".2f"}
+          {"field": "xMean", "type": "quantitative", "title": "Mean Aged 65+ (%)", "format": ".2f"},
+          {"field": "yMean", "type": "quantitative", "title": "Mean Hospitals per 100,000 Residents", "format": ".2f"}
         ]
       }
     },
     {
-      "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "percent_65plus", "as": "xMean"},
-            {"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}
-          ]
-        }
-      ],
+      "transform": [{"aggregate": [{"op": "mean", "field": "percent_65plus", "as": "xMean"}, {"op": "mean", "field": "hospitals_per_100k", "as": "yMean"}]}],
       "mark": {"type": "text", "dx": 8, "dy": -8, "fontSize": 12, "fontWeight": "bold"},
-      "encoding": {
-        "x": {"field": "xMean", "type": "quantitative"},
-        "y": {"field": "yMean", "type": "quantitative"},
-        "text": {"value": "National Average"},
-        "color": {"value": "black"}
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "note": "Observation: The scatter indicates a weak or even negative correlation between ageing and hospital availability. Several older states show lower hospital capacity per capita, revealing uneven healthcare resource distribution across Australia."
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "dx": 8,
-        "dy": 10,
-        "fontSize": 12,
-        "fill": "#374151"
-      },
-      "encoding": {"x": {"value": 0}, "y": {"value": 520}, "text": {"field": "note"}}
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "bottom",
-        "dx": 8,
-        "dy": -6,
-        "fontSize": 11,
-        "fill": "#6b7280"
-      },
-      "encoding": {"x": {"value": 0}, "y": {"value": 535}, "text": {"field": "note"}}
+      "encoding": {"x": {"field": "xMean", "type": "quantitative"}, "y": {"field": "yMean", "type": "quantitative"}, "text": {"value": "National Average"}, "color": {"value": "black"}}
     }
   ],
   "title": {
-    "text": "Relationship Between Population Ageing and Hospital Availability Across States (2001–2024)",
-    "subtitle": "Each bubble represents a state or territory in the selected year. Bubble size corresponds to total population, while position indicates the relationship between ageing and hospital availability."
+    "text": "Association Between Population Ageing and Hospital Availability Across States, 2001–2024",
+    "subtitle": "Each bubble denotes a state or territory in the selected year. Bubble size reflects total population; position indicates the association between population ageing and hospital availability."
   },
-  "config": {
-    "view": {"stroke": null},
-    "background": "white",
-    "axis": {"labelFontSize": 12, "titleFontSize": 13},
-    "legend": {"labelFontSize": 12, "titleFontSize": 13}
-  }
+  "config": {"view": {"stroke": null}, "background": "white", "axis": {"labelFontSize": 12, "titleFontSize": 13}, "legend": {"labelFontSize": 12, "titleFontSize": 13}}
 }
+
+
+
