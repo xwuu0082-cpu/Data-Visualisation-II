@@ -34,13 +34,13 @@ p{color:var(--fg-muted);margin:0 0 var(--space-4);max-width:80ch;text-wrap:prett
   margin:clamp(22px,4vw,42px) 0;box-shadow:var(--shadow);overflow:visible
 }
 .chart-title{font-weight:700;font-size:clamp(18px,.9vw+16px,22px);color:var(--fg);margin-bottom:8px;white-space:normal;text-align:center}
-.chart-subtitle{color:var(--fg-subtle);font-size:clamp(14px,.5vw+12px,16px);margin-bottom:var(--space-3)}
+.chart-subtitle{color:var(--fg-subtle);font-size:clamp(14px,.5vw+12px,16px);margin-bottom:12px}
 figure{margin:var(--space-2) 0}
 figcaption{color:var(--fg-subtle);font-size:.95rem;margin-top:var(--space-3)}
 .vis{width:100%;min-height:clamp(280px,42vh,520px);display:grid;place-items:center;overflow:visible}
 .vis>.vega-embed,.vis>svg,.vega-embed svg{width:100%!important;height:auto!important}
 #vis-scatter{
-  aspect-ratio:auto!important;min-height:clamp(320px,48vh,640px);max-height:none!important;overflow:visible!important
+  aspect-ratio:auto!important;min-height:clamp(260px,34vh,520px)!important;max-height:none!important;overflow:visible!important
 }
 @media (min-width:992px){#vis-scatter{aspect-ratio:auto!important}}
 #vis-scatter .vega-embed,#vis-scatter svg{width:100%!important;height:auto!important;max-height:none!important;overflow:visible!important}
@@ -102,9 +102,11 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-7) 0}
 .vis{display:flex;flex-direction:column;align-items:stretch;overflow:visible}
 .vis .vega-bindings{order:0;width:100%;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start;margin:4px 0 8px;font-size:14px}
 .vis .vega-embed{order:1;width:100%}
-#vis-scatter{aspect-ratio:auto!important;max-height:none!important;min-height:clamp(320px,48vh,640px)}
+#vis-scatter{aspect-ratio:auto!important;max-height:none!important;min-height:clamp(260px,34vh,520px)}
 #vis-scatter .vega-embed,#vis-scatter svg{height:auto!important;max-height:none!important}
 .vis .vega-bindings input[type="range"]{width:min(520px,100%)}
 .vis .vega-bindings select,.vis .vega-bindings input{border:1px solid var(--border);border-radius:8px;padding:6px 10px}
 .vega-embed svg{overflow:visible}
-
+section.chart:has(#vis-heatmap){overflow-x:auto}
+#vis-heatmap .vega-embed,#vis-heatmap svg{width:auto!important;min-width:1600px}
+#vis-line,#vis-linechart,#vis-trend{min-height:clamp(240px,32vh,480px)!important;max-height:none!important;aspect-ratio:auto!important}
