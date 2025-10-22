@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Australia’s Ageing & Hospital Capacity</title>
+<title>Australia’s Ageing & Hospital Capacity (2001–2025)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A data story for a general Australian audience about ageing and public hospital capacity across states, 2001–2025.">
 <link rel="stylesheet" href="css/style.css">
 <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
 <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
@@ -11,60 +12,78 @@
 </head>
 <body>
 <main class="container">
+
   <h1>Australia’s Ageing & Hospital Capacity</h1>
   <p class="lead">Are public hospitals keeping up with an ageing population across Australia from 2001 to 2025?</p>
 
+  <section>
+    <h2>Why this matters</h2>
+    <p>As the share of Australians aged 65+ rises, demand for hospital services typically increases. This page tells a clear story for a general audience: where ageing is concentrated, how it has changed over time, which states are most prepared, and whether ageing is matched by hospital availability.</p>
+  </section>
+
   <section class="chart">
-    <div class="chart-title">Spatial Overview: Where Are Older Populations?</div>
-    <div class="chart-subtitle">Choropleth showing % aged 65+ and hospital availability by state</div>
+    <div class="chart-title">Where is ageing most concentrated?</div>
+    <div class="chart-subtitle">Spatial overview by state</div>
+    <p>Older populations are most pronounced in southern and coastal regions such as Tasmania and South Australia. These areas are likely to face higher pressure on hospital services. Use the map to see the distribution of older residents alongside public hospital availability.</p>
     <div id="vis-map" class="vis"></div>
-    <p class="caption">Darker shades indicate higher % of residents aged 65+. Circle size or colour represents public hospitals.</p>
+    <p class="caption">Darker colours indicate a higher % of residents aged 65+. Circle size/colour represents public hospitals.</p>
     <p class="source">Data: ABS; AIHW (2001–2025)</p>
   </section>
 
   <section class="chart">
-    <div class="chart-title">Trends Over Time: Ageing vs Hospitals</div>
-    <div class="chart-subtitle">National % aged 65+ compared with total public hospitals (2001–2025)</div>
+    <div class="chart-title">How have ageing and hospital capacity changed over time?</div>
+    <div class="chart-subtitle">National trend (2001–2025)</div>
+    <p>The elderly share has climbed steadily since 2001, while total public hospitals grew more slowly. The widening gap suggests capacity may not be keeping pace with demographic change.</p>
     <div id="vis-line" class="vis"></div>
-    <p class="caption">Elderly population has grown faster than hospital numbers.</p>
+    <p class="caption">Lines show % aged 65+ and total public hospitals. Hover to see yearly values.</p>
     <p class="source">Data: ABS; AIHW (2001–2025)</p>
   </section>
 
   <section class="chart">
-    <div class="chart-title">State Comparison: 2025 Readiness</div>
-    <div class="chart-subtitle">Hospitals per 100,000 elderly residents by state</div>
+    <div class="chart-title">Which states are most prepared in 2025?</div>
+    <div class="chart-subtitle">Hospitals per 100,000 elderly residents</div>
+    <p>Availability differs markedly. States above the national average likely have relatively better access for older residents; states below the line may face tighter capacity relative to need.</p>
     <div id="vis-bar" class="vis"></div>
-    <p class="caption">Values sorted to highlight highest and lowest availability relative to ageing.</p>
+    <p class="caption">Bars sorted by hospitals per 100k elderly; vertical line marks the national average.</p>
     <p class="source">Data: ABS; AIHW (2025)</p>
   </section>
 
   <section class="chart">
-    <div class="chart-title">Relationship: Ageing vs Availability</div>
-    <div class="chart-subtitle">Elderly percentage vs hospitals per 100,000 elderly (2025)</div>
+    <div class="chart-title">Does higher ageing imply better availability?</div>
+    <div class="chart-subtitle">Relationship in 2025</div>
+    <p>If ageing and availability were aligned, points would cluster along an upward trend. Outliers below the trend indicate states with higher ageing but relatively fewer hospitals per elderly resident.</p>
     <div id="vis-scatter" class="vis"></div>
-    <p class="caption">Each point is a state or territory; size can reflect total population.</p>
+    <p class="caption">Each point is a state/territory. Size can reflect total population.</p>
     <p class="source">Data: ABS; AIHW (2025)</p>
   </section>
 
   <section class="chart">
-    <div class="chart-title">Pattern Over Time by State</div>
-    <div class="chart-subtitle">Heatmap of hospitals per 100,000 elderly across states and years</div>
+    <div class="chart-title">What patterns emerge across states and years?</div>
+    <div class="chart-subtitle">Heatmap of availability over time</div>
+    <p>The grid reveals how availability evolved from 2001 to 2025. Darkening rows suggest improvement; lighter rows suggest persistent constraints. Uneven progress across states highlights potential geographic disparities.</p>
     <div id="vis-heatmap" class="vis"></div>
-    <p class="caption">Darker cells indicate higher availability; patterns reveal uneven progress.</p>
+    <p class="caption">Colour encodes hospitals per 100k elderly. Compare states (rows) across time (columns).</p>
     <p class="source">Data: ABS; AIHW (2001–2025)</p>
+  </section>
+
+  <section>
+    <h2>Conclusion</h2>
+    <p>Australia’s elderly population has grown faster than public hospital counts since 2001. Readiness differs by state, with several jurisdictions sitting below the national benchmark. The combined spatial, temporal, comparative and relational views suggest that capacity growth has not uniformly kept pace with ageing—an important consideration for equitable access.</p>
   </section>
 
   <hr>
 
   <section>
-    <h2>Conclusion</h2>
-    <p>Australia’s elderly population has risen steadily since 2001, outpacing growth in public hospitals. State-level readiness varies markedly, with some states lagging behind national averages. The combined spatial, temporal, comparative and relational views show that healthcare capacity has not uniformly adapted to ageing.</p>
+    <h2>About this visualisation</h2>
+    <p><strong>Audience:</strong> General Australian readers. <strong>Why:</strong> To understand whether hospital capacity growth is aligned with population ageing. <strong>What:</strong> ABS (demographics) and AIHW (public hospitals) combined into a single CSV; derived indicators include hospitals per 100k elderly. <strong>How:</strong> Interactive Vega-Lite maps and charts embedded on a single scrolly page with consistent layout and typography.</p>
+    <p class="small">Authorship & date are shown below. All figures are created with Vega-Lite and load from JSON specs in this repository.</p>
   </section>
 
   <footer>
     <p>Author: Your Name • Semester 2, 2025 • Monash University</p>
-    <p>Dataset: <span class="highlight">state_summary_all_years_ready_public_2001_2025.csv</span> • Source: ABS, AIHW</p>
+    <p>Dataset: state_summary_all_years_ready_public_2001_2025.csv • Sources: ABS, AIHW</p>
   </footer>
+
 </main>
 
 <script>
