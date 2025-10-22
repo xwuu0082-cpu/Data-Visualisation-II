@@ -28,8 +28,19 @@
     {
       "mark": {"type": "bar", "cornerRadiusEnd": 5},
       "encoding": {
-        "y": {"field": "state_name", "type": "nominal", "title": null, "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}},
-        "x": {"field": "Hospitals_per_100k_elderly", "type": "quantitative", "title": "Public Hospitals per 100,000 People Aged 65 and Over", "axis": {"grid": true, "tickCount": 6, "format": ".1f"}, "scale": {"zero": true}},
+        "y": {
+          "field": "state_name",
+          "type": "nominal",
+          "title": null,
+          "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}
+        },
+        "x": {
+          "field": "Hospitals_per_100k_elderly",
+          "type": "quantitative",
+          "title": "Public Hospitals per 100,000 People Aged 65 and Over",
+          "axis": {"grid": true, "tickCount": 6, "format": ".1f"},
+          "scale": { "zero": true, "nice": true, "domainMax": 22 }
+        },
         "color": {
           "field": "Hospitals_per_100k_elderly",
           "type": "quantitative",
@@ -46,16 +57,28 @@
     },
     {
       "mark": {"type": "rule", "strokeDash": [6, 4], "strokeWidth": 2, "color": "#555"},
-      "encoding": {"x": {"field": "national_avg", "type": "quantitative"}, "y": {"value": 0}, "y2": {"value": 460}}
+      "encoding": {
+        "x": {"field": "national_avg", "type": "quantitative"},
+        "y": {"value": 0},
+        "y2": {"value": 460}
+      }
     },
     {
       "mark": {"type": "text", "align": "left", "fontWeight": "bold", "fontSize": 12, "color": "#555", "dx": 8, "dy": -10},
-      "encoding": {"x": {"field": "national_avg", "type": "quantitative"}, "y": {"value": 0}, "text": {"value": "National Average"}}
+      "encoding": {
+        "x": {"field": "national_avg", "type": "quantitative"},
+        "y": {"value": 0},
+        "text": {"value": "National Average"}
+      }
     },
     {
-      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 6},
+      "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 6, "clip": true},
       "encoding": {
-        "y": {"field": "state_name", "type": "nominal", "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}},
+        "y": {
+          "field": "state_name",
+          "type": "nominal",
+          "sort": {"field": "Hospitals_per_100k_elderly", "order": "descending"}
+        },
         "x": {"field": "Hospitals_per_100k_elderly", "type": "quantitative"},
         "text": {"field": "Hospitals_per_100k_elderly", "type": "quantitative", "format": ".2f"},
         "color": {"value": "#2f2f2f"}
@@ -69,6 +92,13 @@
   ],
   "config": {
     "view": {"stroke": null},
-    "axis": {"labelFont": "Inter, Arial, sans-serif", "titleFont": "Inter, Arial, sans-serif", "labelFontSize": 12, "titleFontSize": 12, "gridColor": "#e9e9e9"}
+    "axis": {
+      "labelFont": "Inter, Arial, sans-serif",
+      "titleFont": "Inter, Arial, sans-serif",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "gridColor": "#e9e9e9"
+    }
   }
 }
+
