@@ -1,87 +1,104 @@
+/* === Base Typography & Colors === */
 body {
-  font-family: 'Open Sans', 'Roboto', sans-serif;
-  background-color: #f9fafb;
+  font-family: 'Inter', 'Open Sans', sans-serif;
+  background-color: #f8fafc;
   color: #1f2937;
   margin: 0;
   padding: 0;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
+/* === Layout Container === */
 .container {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 50px 20px;
 }
 
+/* === Headings === */
 h1, h2, h3 {
   color: #111827;
   font-weight: 700;
-  margin-bottom: 10px;
+  line-height: 1.3;
+  margin-bottom: 12px;
 }
 
 h1 {
-  font-size: 36px;
+  font-size: 38px;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  color: #0f172a;
 }
 
 h2 {
   font-size: 26px;
   margin-top: 60px;
-  border-left: 6px solid #2563eb;
-  padding-left: 12px;
+  border-left: 5px solid #2563eb;
+  padding-left: 14px;
 }
 
 h3 {
   font-size: 20px;
   color: #2563eb;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
+/* === Text Elements === */
 p {
   font-size: 16px;
   color: #374151;
   margin-bottom: 18px;
+  line-height: 1.75;
 }
 
 .lead {
   text-align: center;
   font-size: 18px;
   color: #6b7280;
-  margin-bottom: 40px;
+  max-width: 700px;
+  margin: 0 auto 50px;
 }
 
+/* === Chart Sections === */
 .chart {
   background-color: #ffffff;
-  border-radius: 14px;
-  padding: 18px 20px 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  margin: 40px 0;
+  border-radius: 18px;
+  padding: 28px 30px 22px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  margin: 50px 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chart:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
 }
 
 .chart-title {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 600;
   color: #111827;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .chart-subtitle {
   color: #6b7280;
   font-size: 15px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
+/* === Visual Container === */
 .vis {
   width: 100%;
-  max-width: 1000px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
+/* === Caption & Source === */
 .caption {
   color: #6b7280;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .source {
@@ -89,8 +106,10 @@ p {
   font-size: 13px;
   margin-top: 6px;
   text-align: right;
+  font-style: italic;
 }
 
+/* === Interactive Controls === */
 .controls {
   display: flex;
   gap: 10px;
@@ -103,11 +122,11 @@ button {
   color: white;
   border: none;
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: 8px 18px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 button:hover {
@@ -122,15 +141,18 @@ select {
   font-size: 15px;
 }
 
+/* === Footer === */
 footer {
   text-align: center;
   color: #6b7280;
   font-size: 14px;
-  margin-top: 60px;
+  margin-top: 80px;
   border-top: 1px solid #e5e7eb;
-  padding-top: 16px;
+  padding-top: 20px;
+  line-height: 1.5;
 }
 
+/* === Utility Classes === */
 .center {
   text-align: center;
 }
@@ -143,12 +165,13 @@ footer {
 hr {
   border: none;
   border-top: 1px solid #e5e7eb;
-  margin: 40px 0;
+  margin: 50px 0;
 }
 
+/* === Responsive Design === */
 @media (max-width: 768px) {
   .container {
-    padding: 20px;
+    padding: 25px;
   }
 
   h1 {
@@ -164,7 +187,7 @@ hr {
   }
 
   .chart {
-    padding: 14px;
+    padding: 20px;
   }
 }
 
@@ -180,6 +203,7 @@ hr {
   }
 }
 
+/* === Print Mode === */
 @media print {
   body {
     background-color: #ffffff;
@@ -190,3 +214,4 @@ hr {
     border: 1px solid #ccc;
   }
 }
+
