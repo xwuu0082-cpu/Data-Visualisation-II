@@ -3,21 +3,21 @@
   "description": "Heatmap showing public hospitals per 100,000 residents across Australian states and territories, 2001–2024.",
   "data": {
     "url": "https://raw.githubusercontent.com/xwuu0082-cpu/Data-Visualisation-II/refs/heads/main/data/state_summary_all_years_ready_public_2001_2025.csv",
-    "format": {"type": "csv"}
+    "format": { "type": "csv" }
   },
   "transform": [
-    {"filter": "toNumber(datum.year) >= 2001 && toNumber(datum.year) <= 2024"},
-    {"filter": "datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"}
+    { "filter": "toNumber(datum.year) >= 2001 && toNumber(datum.year) <= 2024" },
+    { "filter": "datum.state_name != 'Australia' && datum.state_name != 'Other Territories'" }
   ],
   "width": 920,
   "height": 580,
-  "mark": {"type": "rect", "stroke": "white", "strokeWidth": 0.5},
+  "mark": { "type": "rect", "stroke": "white", "strokeWidth": 0.5 },
   "encoding": {
     "x": {
       "field": "year",
       "type": "ordinal",
       "title": "Year",
-      "axis": {"labelAngle": 0}
+      "axis": { "labelAngle": 0 }
     },
     "y": {
       "field": "state_name",
@@ -38,19 +38,26 @@
       "field": "hospitals_per_100k",
       "type": "quantitative",
       "title": "Public Hospitals per 100,000 Residents",
-      "scale": {"scheme": {"name": "cividis", "extent": [0.25, 1]}},
-      "legend": {"orient": "right"}
+      "scale": { "scheme": { "name": "cividis", "extent": [0.25, 1] } },
+      "legend": {
+        "orient": "right",
+        "gradientLength": 460,       // 竖向色带的“高度”
+        "gradientThickness": 20,     // 竖向色带的“宽度/厚度”
+        "titleLimit": 1000,          // 不截断标题
+        "labelLimit": 1000,          // 不截断刻度文本
+        "labelOverlap": false
+      }
     },
     "tooltip": [
-      {"field": "state_name", "type": "nominal", "title": "State/Territory"},
-      {"field": "year", "type": "ordinal", "title": "Year"},
-      {"field": "percent_65plus", "type": "quantitative", "title": "Aged 65+ (%)", "format": ".1f"},
-      {"field": "hospitals_count", "type": "quantitative", "title": "Public Hospitals (Total)", "format": ","},
-      {"field": "hospitals_per_100k", "type": "quantitative", "title": "Hospitals per 100,000 Residents", "format": ".2f"}
+      { "field": "state_name", "type": "nominal", "title": "State/Territory" },
+      { "field": "year", "type": "ordinal", "title": "Year" },
+      { "field": "percent_65plus", "type": "quantitative", "title": "Aged 65+ (%)", "format": ".1f" },
+      { "field": "hospitals_count", "type": "quantitative", "title": "Public Hospitals (Total)", "format": "," },
+      { "field": "hospitals_per_100k", "type": "quantitative", "title": "Hospitals per 100,000 Residents", "format": ".2f" }
     ]
   },
   "layer": [
-    {"mark": "rect"},
+    { "mark": "rect" },
     {
       "data": {
         "values": [
@@ -69,9 +76,9 @@
         "fill": "#374151"
       },
       "encoding": {
-        "x": {"value": 0, "scale": null},
-        "y": {"value": 505, "scale": null},
-        "text": {"field": "note"}
+        "x": { "value": 0, "scale": null },
+        "y": { "value": 505, "scale": null },
+        "text": { "field": "note" }
       }
     },
     {
@@ -92,9 +99,9 @@
         "fill": "#6b7280"
       },
       "encoding": {
-        "x": {"value": 0, "scale": null},
-        "y": {"value": 545, "scale": null},
-        "text": {"field": "note"}
+        "x": { "value": 0, "scale": null },
+        "y": { "value": 545, "scale": null },
+        "text": { "field": "note" }
       }
     }
   ],
@@ -106,9 +113,9 @@
     "anchor": "start"
   },
   "config": {
-    "view": {"stroke": "transparent"},
-    "axis": {"labelFontSize": 12, "titleFontSize": 12},
-    "legend": {"titleFontSize": 12, "labelFontSize": 12, "padding": 10},
+    "view": { "stroke": "transparent" },
+    "axis": { "labelFontSize": 12, "titleFontSize": 12 },
+    "legend": { "titleFontSize": 12, "labelFontSize": 12, "padding": 10 },
     "background": "white"
   }
 }
