@@ -10,7 +10,7 @@
   "transform": [
     {"filter": "toNumber(datum.year) == Year && datum.state_name != 'Australia' && datum.state_name != 'Other Territories'"}
   ],
-  "width": 920,
+  "width": 820,
   "height": 580,
   "layer": [
     {
