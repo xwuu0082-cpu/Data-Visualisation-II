@@ -41,10 +41,10 @@
       "scale": { "scheme": { "name": "cividis", "extent": [0.25, 1] } },
       "legend": {
         "orient": "right",
-        "gradientLength": 460,       // 竖向色带的“高度”
-        "gradientThickness": 20,     // 竖向色带的“宽度/厚度”
-        "titleLimit": 1000,          // 不截断标题
-        "labelLimit": 1000,          // 不截断刻度文本
+        "gradientLength": 460,       
+        "gradientThickness": 20,    
+        "titleLimit": 1000,          
+        "labelLimit": 1000,         
         "labelOverlap": false
       }
     },
