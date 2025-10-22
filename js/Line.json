@@ -7,6 +7,7 @@
   },
   "width": 920,
   "height": 460,
+  "padding": { "top": 8, "left": 8, "right": 160, "bottom": 24 },
   "title": {
     "text": "Temporal Trends in Population Ageing and Hospital Capacity in Australia, 2001–2024",
     "subtitle": "The share of residents aged 65 and over has increased steadily, whereas hospital capacity has expanded more slowly, indicating a growing imbalance between demand and supply.",
@@ -38,7 +39,11 @@
     },
     { "calculate": "datum.population_65plus / datum.population_total * 100", "as": "percent_65plus" },
     { "calculate": "datum.hospitals_count / (datum.population_65plus / 100000)", "as": "hospitals_per100k65" },
-    { "calculate": "toDate(datum.year_num + '-01-01')", "as": "yearDate" }
+    { "calculate": "toDate(datum.year_num + '-01-01')", "as": "yearDate" },
+    {
+      "calculate": "metric == 'count' ? datum.hospitals_count : datum.hospitals_per100k65",
+      "as": "hospital_value"
+    }
   ],
   "layer": [
     {
@@ -57,36 +62,30 @@
       }
     },
     {
-      "transform": [{ "filter": "metric == 'count'" }],
       "mark": { "type": "line", "color": "#264653", "point": true, "strokeDash": [6, 4], "strokeWidth": 2 },
       "encoding": {
         "x": { "field": "yearDate", "type": "temporal" },
         "y": {
-          "field": "hospitals_count",
-          "type": "quantitative",
-          "scale": { "domain": [300, 800], "zero": false },
-          "axis": { "orient": "right", "title": "Public Hospitals (Total)", "grid": false }
-        },
-        "tooltip": [
-          { "field": "year_num", "title": "Year" },
-          { "field": "hospitals_count", "title": "Public Hospitals (Total)", "format": ".0f" }
-        ]
-      }
-    },
-    {
-      "transform": [{ "filter": "metric == 'per100k65'" }],
-      "mark": { "type": "line", "color": "#264653", "point": true, "strokeDash": [6, 4], "strokeWidth": 2 },
-      "encoding": {
-        "x": { "field": "yearDate", "type": "temporal" },
-        "y": {
-          "field": "hospitals_per100k65",
+          "field": "hospital_value",
           "type": "quantitative",
           "scale": { "zero": false },
-          "axis": { "orient": "right", "title": "Public Hospitals per 100,000 People Aged 65 and Over", "grid": false }
+          "axis": {
+            "orient": "right",
+            "title": { "expr": "metric == 'count' ? 'Public Hospitals (Total)' : 'Public Hospitals per 100,000 People Aged 65 and Over'" },
+            "grid": false,
+            "tickCount": 6,
+            "labelPadding": 4,
+            "titlePadding": 10,
+            "offset": 8
+          }
         },
         "tooltip": [
           { "field": "year_num", "title": "Year" },
-          { "field": "hospitals_per100k65", "title": "Hospitals per 100k (Aged 65+)", "format": ".2f" }
+          {
+            "field": "hospital_value",
+            "title": { "expr": "metric == 'count' ? 'Public Hospitals (Total)' : 'Hospitals per 100k (Aged 65+)'" },
+            "format": ".2f"
+          }
         ]
       }
     },
