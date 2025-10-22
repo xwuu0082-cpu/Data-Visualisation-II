@@ -4,196 +4,156 @@
   <meta charset="utf-8">
   <title>Australia’s Ageing and Public Hospital Capacity (2001–2025)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A single-page presentation that analyses whether public hospital capacity has kept pace with population ageing across Australia between 2001 and 2025. Includes a map, line chart, bar chart, scatter plot, and heatmap built with Vega-Lite.">
+  <meta name="description" content="A single-page analysis examining whether public hospital capacity has kept pace with Australia’s ageing population between 2001 and 2025. Includes a map, line chart, bar chart, scatter plot, and heatmap built with Vega-Lite.">
+  <meta name="theme-color" content="#0ea5e9">
+  <meta property="og:title" content="Australia’s Ageing and Public Hospital Capacity (2001–2025)">
+  <meta property="og:description" content="Has public hospital capacity kept pace with Australia’s ageing population? A concise, evidence-based narrative with interactive charts.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    :root{
-      --fg:#1f2937; --muted:#4b5563; --light:#6b7280; --brand:#0f766e; --bg:#ffffff;
-      --maxw:1100px;
-    }
-    html,body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 "Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;}
-    .container{max-width:var(--maxw);margin:0 auto;padding:24px 16px;}
-    header h1{font-weight:800;letter-spacing:.2px;margin:0 0 6px;}
-    header p.lead{font-size:1.05rem;color:var(--muted);margin:.25rem 0 1.25rem;}
-    h2{margin:2.0rem 0 .25rem;font-size:1.35rem}
-    .kicker{color:var(--brand);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.8rem}
-    .grid{display:grid;gap:24px}
-    .chart{padding:16px 0;border-top:1px solid #e5e7eb}
-    figure{margin:10px 0}
-    .vis{width:100%;min-height:340px}
-    figcaption{color:var(--light);font-size:.9rem;margin-top:6px}
-    .explain{display:grid;gap:6px;margin:.35rem 0 1rem}
-    .explain strong{display:block}
-    .meta{color:var(--light);font-size:.9rem}
-    footer{margin-top:28px;border-top:1px solid #e5e7eb;padding-top:12px}
-    /* avoid horizontal scroll on small screens */
-    .container, .vis{overflow-x:hidden}
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
 </head>
-
 <body>
-  <main class="container" role="main">
+  <a class="sr-only" href="#main">Skip to main content</a>
+  <main id="main" class="container" role="main" aria-label="Australia’s Ageing and Public Hospital Capacity (2001–2025)">
     <header>
       <p class="kicker">Presentation • Australia</p>
       <h1>Australia’s Ageing and Public Hospital Capacity (2001–2025)</h1>
       <p class="lead">
-        This page examines whether the public hospital system has kept pace with the rapid growth in Australia’s older population.
-        It combines demographic indicators with measures of hospital availability and presents a concise narrative across space and time.
+        This page assesses whether the public hospital system has expanded in line with the rapid growth of Australia’s older population.
+        The analysis integrates demographic indicators with measures of hospital availability and presents a clear narrative across space and time.
       </p>
     </header>
 
     <section aria-labelledby="why">
       <h2 id="why">Motivation</h2>
       <p>
-        The proportion of Australians aged 65 years and over has risen steadily over the past two decades.
-        Ageing populations typically require more frequent and complex care. Understanding whether hospital capacity has expanded at a comparable rate is essential for planning, equity, and fiscal sustainability.
+        The share of Australians aged 65 years and over has increased steadily over the past two decades. Older populations typically require more frequent and complex care.
+        Evaluating whether hospital capacity has grown commensurately is essential for planning, equity, and fiscal sustainability.
       </p>
       <p class="meta">
-        Audience: an informed Australian public. Jargon is avoided and measures are explained inline. The page is designed as a single, scrollable presentation without horizontal scrolling, consistent with unit guidelines. 
+        Audience: an informed Australian public. Technical jargon is minimised and measures are explained inline. The presentation is delivered as a single, scrollable page without horizontal scrolling, consistent with unit expectations.
       </p>
     </section>
 
-    <!-- MAP -->
     <section class="chart" aria-labelledby="map-title">
       <h2 id="map-title">Where is population ageing most concentrated?</h2>
       <p class="meta">Geographic overview by state and territory</p>
-
       <figure>
-        <div id="vis-map" class="vis" role="img" aria-label="Choropleth map of percentage aged 65+ with proportional circles for public hospitals"></div>
+        <div id="vis-map" class="vis" role="img" aria-label="Choropleth of percentage aged 65+ with proportional circles for public hospitals"></div>
         <figcaption>
           Colour encodes the percentage of residents aged 65+. Circle size represents either the number of public hospitals or hospitals per 100,000 residents (toggle in the chart).
         </figcaption>
       </figure>
-
       <div class="explain">
-        <div><strong>What this shows</strong> Southern and coastal jurisdictions—most notably Tasmania and South Australia—have comparatively older age structures.</div>
-        <div><strong>Why it matters</strong> Older populations place higher demand on inpatient and continuing care; spatial clustering implies uneven pressure on local systems.</div>
-        <div><strong>Points to note</strong> Colour communicates age structure only; circle size conveys hospital capacity. Consider both together when interpreting access.</div>
+        <div><strong>What this shows</strong> Older age structures are concentrated in southern and coastal jurisdictions—most notably Tasmania and South Australia.</div>
+        <div><strong>Why it matters</strong> Concentrated ageing implies uneven pressure on local systems, including higher inpatient demand, longer travel times, and potential pressure on sub-acute services.</div>
+        <div><strong>So what</strong> Capacity planning should be spatially differentiated: jurisdictions with older age profiles likely require proportionately more beds and workforce.</div>
       </div>
-
-      <p class="meta">Sources: Australian Bureau of Statistics (ABS) and Australian Institute of Health and Welfare (AIHW), 2001–2025.</p>
+      <p class="meta">Sources: Australian Bureau of Statistics (ABS); Australian Institute of Health and Welfare (AIHW), 2001–2025.</p>
     </section>
 
-    <!-- LINE -->
     <section class="chart" aria-labelledby="line-title">
       <h2 id="line-title">Are capacity and need moving in step?</h2>
       <p class="meta">National trends, 2001–2025</p>
-
       <figure>
-        <div id="vis-line" class="vis" role="img" aria-label="Dual-axis line chart with percentage aged 65+ and public hospital capacity"></div>
+        <div id="vis-line" class="vis" role="img" aria-label="Dual-axis line chart: percentage aged 65+ and hospital capacity"></div>
         <figcaption>
-          The solid line tracks the share of residents aged 65+. The dashed line shows either the total number of public hospitals or hospitals per 100,000 people aged 65+ (selectable).
+          The solid line tracks the share of residents aged 65+. The dashed line shows either total public hospitals or hospitals per 100,000 people aged 65+ (selectable).
         </figcaption>
       </figure>
-
       <div class="explain">
-        <div><strong>What this shows</strong> The older-age share increases steadily throughout the period, while capacity expands more slowly.</div>
-        <div><strong>Why it matters</strong> A widening gap signals a growing mismatch between demand and supply, with implications for waiting times and workforce planning.</div>
-        <div><strong>Points to note</strong> The two axes are independent to preserve the shape of each series; labels and titles indicate the units for clarity.</div>
+        <div><strong>What this shows</strong> The older-age share rises consistently across the period, whereas measured capacity grows more slowly.</div>
+        <div><strong>Why it matters</strong> A widening separation between need and capacity signals increasing pressure on throughput, waiting lists, and staffing.</div>
+        <div><strong>So what</strong> Without targeted expansion and productivity gains, demographic momentum is likely to outstrip available resources.</div>
       </div>
-
       <p class="meta">Sources: ABS; AIHW (2001–2025).</p>
     </section>
 
-    <!-- BAR -->
     <section class="chart" aria-labelledby="bar-title">
       <h2 id="bar-title">Which jurisdictions are better positioned in 2025?</h2>
       <p class="meta">Hospitals per 100,000 residents aged 65+, 2025</p>
-
       <figure>
-        <div id="vis-bar" class="vis" role="img" aria-label="Bar chart of hospitals per 100,000 people aged 65+ with a national average reference line"></div>
+        <div id="vis-bar" class="vis" role="img" aria-label="Bar chart of hospitals per 100,000 residents aged 65+ with national average"></div>
         <figcaption>
-          Bars are sorted by hospitals per 100,000 people aged 65+. The vertical dashed rule marks the national average.
+          Bars are sorted by hospitals per 100,000 residents aged 65+. The vertical dashed rule marks the national average.
         </figcaption>
       </figure>
-
       <div class="explain">
-        <div><strong>Key finding</strong> Several states fall below the national benchmark, indicating relatively limited availability for older residents.</div>
-        <div><strong>Interpretation</strong> Being above the average suggests comparatively better access, not necessarily sufficient capacity. Population density and geography also influence service delivery.</div>
+        <div><strong>Key finding</strong> Several jurisdictions fall below the national benchmark, indicating relatively limited availability for older residents.</div>
+        <div><strong>Why it matters</strong> Below-benchmark availability suggests higher risk of service constraint as the cohort continues to grow.</div>
+        <div><strong>So what</strong> Above-average availability indicates comparatively better access, but not sufficiency; geography and density still shape effective coverage.</div>
       </div>
-
       <p class="meta">Sources: ABS; AIHW (2025).</p>
     </section>
 
-    <!-- SCATTER -->
     <section class="chart" aria-labelledby="scatter-title">
       <h2 id="scatter-title">Does higher ageing correspond to greater availability?</h2>
       <p class="meta">Cross-sectional comparison, 2025</p>
-
       <figure>
-        <div id="vis-scatter" class="vis" role="img" aria-label="Scatter plot of % aged 65+ versus hospitals per 100,000 aged 65+, with point size proportional to population"></div>
+        <div id="vis-scatter" class="vis" role="img" aria-label="Scatter plot of % aged 65+ versus hospitals per 100,000 aged 65+, sized by population"></div>
         <figcaption>
-          Horizontal position: percentage aged 65+. Vertical position: hospitals per 100,000 people aged 65+. Point size: total population.
+          Horizontal position: percentage aged 65+. Vertical position: hospitals per 100,000 residents aged 65+. Point size: total population.
         </figcaption>
       </figure>
-
       <div class="explain">
-        <div><strong>What this shows</strong> If planning had fully kept pace, points would align upward; instead, several older jurisdictions sit at or below the mid-range of availability.</div>
-        <div><strong>Implication</strong> Ageing alone does not guarantee higher capacity; planning choices and historical baselines matter.</div>
+        <div><strong>What this shows</strong> If planning fully kept pace, higher ageing would align with higher availability; instead, several older jurisdictions remain at mid-range levels.</div>
+        <div><strong>Why it matters</strong> Demographic need does not automatically translate into provision; historical infrastructure and budget settings matter.</div>
+        <div><strong>So what</strong> Investments may need to prioritise places where ageing is pronounced but availability remains constrained.</div>
       </div>
-
       <p class="meta">Sources: ABS; AIHW (2025).</p>
     </section>
 
-    <!-- HEATMAP -->
     <section class="chart" aria-labelledby="heat-title">
       <h2 id="heat-title">How has availability evolved by state and year?</h2>
       <p class="meta">Hospitals per 100,000 residents aged 65+, 2001–2025</p>
-
       <figure>
-        <div id="vis-heatmap" class="vis" role="img" aria-label="Heatmap of hospitals per 100,000 people aged 65+ by state and year"></div>
+        <div id="vis-heatmap" class="vis" role="img" aria-label="Heatmap of hospitals per 100,000 residents aged 65+ by state and year"></div>
         <figcaption>
           Rows represent states and territories; columns represent years. Darker tones indicate higher availability.
         </figcaption>
       </figure>
-
       <div class="explain">
-        <div><strong>Reading guide</strong> Scan along a row to see a state’s trajectory; scan down a column to compare states in a given year.</div>
-        <div><strong>Observation</strong> Progress is uneven. Some jurisdictions improve steadily; others show plateaus, suggesting persistent capacity gaps.</div>
+        <div><strong>What this shows</strong> Trajectories are uneven. Some jurisdictions show gradual improvement; others plateau or fluctuate.</div>
+        <div><strong>Why it matters</strong> Divergent paths imply differing exposure to demographic risk and differing capacity to respond.</div>
+        <div><strong>So what</strong> Monitoring should be continuous, with responsiveness to local trends rather than uniform national settings.</div>
       </div>
-
       <p class="meta">Sources: ABS; AIHW (2001–2025).</p>
     </section>
 
-    <!-- CONCLUSION -->
     <section class="chart" aria-labelledby="conc">
       <h2 id="conc">Conclusion</h2>
       <div class="grid">
         <p>
-          Across space and time, population ageing has outpaced the expansion of public hospital capacity.
-          While certain jurisdictions are comparatively well-positioned, others fall below national benchmarks.
-          These findings support the case for targeted investments in facilities, workforce, and models of care that are sensitive to local demography.
+          Across space and time, population ageing has outpaced the expansion of public hospital capacity. While some jurisdictions are comparatively well positioned, others remain below national benchmarks. The evidence supports targeted investments in facilities, workforce, and models of care that reflect local demography and geography, alongside productivity improvements to ease pressure on waiting lists and budgets.
         </p>
         <p class="meta">
-          Limitations: indicators reflect availability, not utilisation or outcomes; small jurisdictions may be affected by year-to-year volatility; private provision and cross-border flows are not covered.
+          Limitations: indicators measure availability rather than utilisation or outcomes; smaller jurisdictions may exhibit volatility; private provision and cross-border flows are outside scope.
         </p>
       </div>
     </section>
 
-    <!-- METADATA -->
     <footer>
-      <p class="meta">
-        Author: Xiaojun Wu · FIT3179 Data Visualisation 2 
-      </p>
-      <p class="meta">
-        Data sources: Australian Bureau of Statistics (ABS); Australian Institute of Health and Welfare (AIHW), 2001–2025.
-        All charts are built with Vega-Lite and embedded on a single scrollable page to meet unit expectations for presentation, storytelling, and readability.
-      </p>
+      <p class="meta">Author: Xiaojun Wu · FIT3179 Data Visualisation 2</p>
+      <p class="meta">Data sources: Australian Bureau of Statistics (ABS); Australian Institute of Health and Welfare (AIHW), 2001–2025. Charts built with Vega-Lite on a single, scrollable page to meet unit expectations for presentation, storytelling, and readability.</p>
     </footer>
   </main>
 
-  <script>
-    const common = {actions:false, renderer:"svg", i18nLocale:"en-AU"};
-    const fit = {mode:"fit", theme:"latimes"}; // light unobtrusive theme
+  <noscript><p class="meta center">JavaScript is required to render the interactive charts.</p></noscript>
 
-    vegaEmbed("#vis-map", "js/Map.json", {...common, config: {autosize:{type:"fit-x", contains:"padding"}}, tooltip:fit});
-    vegaEmbed("#vis-line", "js/Line.json", {...common, config: {autosize:{type:"fit-x", contains:"padding"}}, tooltip:fit});
-    vegaEmbed("#vis-bar", "js/BarChart.json", {...common, config: {autosize:{type:"fit-x", contains:"padding"}}, tooltip:fit});
-    vegaEmbed("#vis-scatter", "js/ScatterPlot.json", {...common, config: {autosize:{type:"fit-x", contains:"padding"}}, tooltip:fit});
-    vegaEmbed("#vis-heatmap", "js/HeatMap.json", {...common, config: {autosize:{type:"fit-x", contains:"padding"}}, tooltip:fit});
+  <script>
+    window.addEventListener('load', () => {
+      const common = { actions: false, renderer: "svg", i18nLocale: "en-AU" };
+      const fitCfg = { autosize: { type: "fit-x", contains: "padding" } };
+      const tooltipCfg = { mode: "fit", theme: "latimes" };
+      vegaEmbed("#vis-map", "js/Map.json", { ...common, config: fitCfg, tooltip: tooltipCfg });
+      vegaEmbed("#vis-line", "js/Line.json", { ...common, config: fitCfg, tooltip: tooltipCfg });
+      vegaEmbed("#vis-bar", "js/BarChart.json", { ...common, config: fitCfg, tooltip: tooltipCfg });
+      vegaEmbed("#vis-scatter", "js/ScatterPlot.json", { ...common, config: fitCfg, tooltip: tooltipCfg });
+      vegaEmbed("#vis-heatmap", "js/HeatMap.json", { ...common, config: fitCfg, tooltip: tooltipCfg });
+    });
   </script>
 </body>
 </html>
