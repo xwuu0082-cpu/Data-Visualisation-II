@@ -1,38 +1,32 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "title": {
-    "text": "Where is Ageing Most Concentrated in Australia?",
+    "text": "Spatial Concentration of Population Ageing in Australia",
     "subtitle": [
-      "Older Australians are predominantly concentrated in southern and coastal states such as Tasmania and South Australia.",
-      "Darker colour indicates a higher percentage of residents aged 65 years and over, while larger circles represent states with a greater number of public hospitals per one hundred thousand people."
+      "Older populations are concentrated in southern and coastal jurisdictions, notably Tasmania and South Australia.",
+      "Darker shading indicates a higher percentage of residents aged 65 and over; larger circles indicate more public hospitals per 100,000 people."
     ],
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
   },
   "width": 920,
-  "height": 720,
+  "height": 620,
   "projection": {"type": "mercator", "center": [134, -27], "scale": 900},
   "params": [
     {
       "name": "metric",
-      "value": "total",
+      "value": "per100k",
       "bind": {
         "input": "radio",
         "options": ["total", "per100k"],
-        "labels": ["Hospitals (Total)", "Hospitals per 100,000 People"]
+        "labels": ["Public Hospitals (Total)", "Public Hospitals per 100,000 Residents"]
       }
     },
     {
       "name": "year_select",
       "value": 2024,
-      "bind": {
-        "input": "range",
-        "min": 2001,
-        "max": 2024,
-        "step": 1,
-        "name": "Select Year:"
-      }
+      "bind": {"input": "range", "min": 2001, "max": 2024, "step": 1, "name": "Select Year:"}
     }
   ],
   "layer": [
@@ -74,16 +68,16 @@
         "color": {
           "field": "percent_65plus",
           "type": "quantitative",
-          "title": "Percentage of Residents Aged 65 Years and Over",
-          "scale": {"scheme": {"name": "cividis", "extent": [0.2, 1]}}
+          "title": "Percentage of Residents Aged 65 and Over",
+          "scale": {"scheme": {"name": "cividis", "extent": [0.25, 1]}}
         },
         "tooltip": [
-          {"field": "state_name", "title": "State or Territory"},
+          {"field": "state_name", "title": "State/Territory"},
           {"field": "year", "title": "Year"},
-          {"field": "population_total", "title": "Total Population", "format": ","},
-          {"field": "hospitals_count", "title": "Total Number of Public Hospitals", "format": ","},
-          {"field": "hospitals_per_100k", "title": "Public Hospitals per 100,000 People", "format": ".2f"},
-          {"field": "percent_65plus", "title": "Percentage Aged 65 Years and Over", "format": ".1f"}
+          {"field": "population_total", "title": "Population", "format": ","},
+          {"field": "hospitals_count", "title": "Public Hospitals (Total)", "format": ","},
+          {"field": "hospitals_per_100k", "title": "Public Hospitals per 100,000 Residents", "format": ".2f"},
+          {"field": "percent_65plus", "title": "Aged 65+ (%)", "format": ".1f"}
         ]
       }
     },
@@ -96,20 +90,11 @@
         {"filter": "toNumber(datum.year) == year_select"},
         {
           "calculate": "metric == 'per100k' ? toNumber(datum.hospitals_per_100k) : toNumber(datum.hospitals_count)",
-          "as": "metric_value_raw"
-        },
-        {
-          "calculate": "isValid(datum.metric_value_raw) && isFinite(datum.metric_value_raw) ? datum.metric_value_raw : null",
           "as": "metric_value"
         },
-        {"filter": "datum.metric_value != null"}
+        {"filter": "isValid(datum.metric_value) && isFinite(datum.metric_value)"}
       ],
-      "mark": {
-        "type": "circle",
-        "opacity": 0.85,
-        "stroke": "#ffffff",
-        "strokeWidth": 0.9
-      },
+      "mark": {"type": "circle", "opacity": 0.85, "stroke": "#ffffff", "strokeWidth": 0.9},
       "encoding": {
         "longitude": {"field": "longitude", "type": "quantitative"},
         "latitude": {"field": "latitude", "type": "quantitative"},
@@ -117,15 +102,15 @@
           "field": "metric_value",
           "type": "quantitative",
           "scale": {"type": "sqrt", "range": [100, 1800], "domainMin": 0},
-          "legend": {"title": "Hospital Metric"}
+          "legend": {"title": "Hospital Capacity Metric"}
         },
-        "color": {"value": "#0b2e6f"},
+        "color": {"value": "#264653"},
         "tooltip": [
-          {"field": "state_name", "title": "State or Territory"},
+          {"field": "state_name", "title": "State/Territory"},
           {"field": "year", "title": "Year"},
-          {"field": "population_total", "title": "Total Population", "format": ","},
-          {"field": "hospitals_count", "title": "Total Number of Public Hospitals", "format": ","},
-          {"field": "hospitals_per_100k", "title": "Public Hospitals per 100,000 People", "format": ".2f"}
+          {"field": "population_total", "title": "Population", "format": ","},
+          {"field": "hospitals_count", "title": "Public Hospitals (Total)", "format": ","},
+          {"field": "hospitals_per_100k", "title": "Public Hospitals per 100,000 Residents", "format": ".2f"}
         ]
       }
     },
@@ -135,77 +120,14 @@
         "format": {"type": "csv"}
       },
       "transform": [{"filter": "toNumber(datum.year) == year_select"}],
-      "mark": {
-        "type": "text",
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "fill": "#ffffff",
-        "stroke": "#0b2e6f",
-        "strokeWidth": 0.5,
-        "dy": -5
-      },
-      "encoding": {
-        "longitude": {"field": "longitude"},
-        "latitude": {"field": "latitude"},
-        "text": {"field": "abbr"}
-      }
+      "mark": {"type": "text", "fontSize": 11, "fontWeight": "bold", "fill": "#ffffff", "stroke": "#264653", "strokeWidth": 0.5, "dy": -5},
+      "encoding": {"longitude": {"field": "longitude"}, "latitude": {"field": "latitude"}, "text": {"field": "abbr"}}
     },
     {
-      "data": {
-        "values": [
-          {
-            "note": "Observation: Tasmania and South Australia have the highest proportions of elderly residents but comparatively fewer hospitals, indicating uneven preparedness across the healthcare system."
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "top",
-        "dx": 8,
-        "dy": 5,
-        "fontSize": 12,
-        "fill": "#374151"
-      },
-      "encoding": {
-        "x": {"value": 0},
-        "y": {"value": 705},
-        "text": {"field": "note"}
-      }
-    },
-    {
-      "data": {
-        "values": [
-          {
-            "note": "Data Sources: Australian Institute of Health and Welfare (AIHW) and Australian Bureau of Statistics (ABS), 2001–2025."
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "bottom",
-        "dx": 8,
-        "dy": -6,
-        "fontSize": 11,
-        "fill": "#6b7280"
-      },
-      "encoding": {
-        "x": {"value": 0},
-        "y": {"value": 700},
-        "text": {"field": "note"}
-      }
+      "data": {"values": [{"note": "Data Sources: Australian Institute of Health and Welfare (AIHW); Australian Bureau of Statistics (ABS), 2001–2025."}]},
+      "mark": {"type": "text", "align": "left", "baseline": "bottom", "dx": 8, "dy": -6, "fontSize": 11, "fill": "#6b7280"},
+      "encoding": {"x": {"value": 0}, "y": {"value": 640}, "text": {"field": "note"}}
     }
   ],
-  "config": {
-    "legend": {
-      "orient": "bottom",
-      "labelFontSize": 12,
-      "titleFontSize": 12,
-      "titleLimit": 0,
-      "padding": 10
-    },
-    "view": {"stroke": null},
-    "axis": {"labelFontSize": 12, "titleFontSize": 12}
-  }
+  "config": {"legend": {"orient": "bottom"}, "view": {"stroke": null}, "axis": {"labelFontSize": 12, "titleFontSize": 12}}
 }
